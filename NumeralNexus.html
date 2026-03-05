@@ -1,0 +1,3097 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUMERAL NEXUS</title>
+    <style>
+        /* MENU STYLES */
+        
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-green: #00ff41;
+            --neon-orange: #ff6600;
+            --neon-purple: #bf00ff;
+            --dark-bg: #020204;
+            --panel-bg: rgba(5, 5, 10, 0.98);
+        }
+        
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: var(--dark-bg);
+            color: #fff;
+            min-height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Scrollbar estilizada */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--neon-cyan), var(--neon-pink));
+            border-radius: 6px;
+            border: 2px solid var(--dark-bg);
+        }
+        
+        /* FUNDO ESPECTACULAR */
+        .bg-animated {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -4;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 243, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 0, 255, 0.15) 0%, transparent 50%);
+            animation: bgPulse 8s ease-in-out infinite;
+        }
+        
+        @keyframes bgPulse {
+            0%, 100% { filter: hue-rotate(0deg); transform: scale(1); }
+            50% { filter: hue-rotate(30deg); transform: scale(1.05); }
+        }
+        
+        .matrix-bg {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            z-index: -3;
+            background: 
+                linear-gradient(90deg, transparent 49%, rgba(0, 243, 255, 0.08) 50%, transparent 51%),
+                linear-gradient(rgba(0, 243, 255, 0.08) 1px, transparent 1px);
+            background-size: 60px 60px;
+            transform: perspective(1000px) rotateX(60deg);
+            animation: gridMove 15s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: perspective(1000px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(1000px) rotateX(60deg) translateY(60px); }
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            animation: float 8s infinite;
+            box-shadow: 0 0 10px currentColor;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(100vh); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+        
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Logo */
+        .main-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4em;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeInDown 0.8s ease-out forwards;
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .main-title span {
+            display: block;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-pink), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 8px;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: var(--neon-green);
+            text-align: center;
+            margin-bottom: 50px;
+            letter-spacing: 3px;
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out 0.3s forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Missão Box */
+        .mission-box {
+            background: rgba(5, 5, 10, 0.95);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 800px;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.3);
+            opacity: 0;
+            animation: fadeInScale 0.6s ease-out 0.6s forwards;
+            z-index: 10;
+        }
+        
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .mission-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-orange);
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .mission-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #e0e0e0;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        }
+        
+        .mission-highlight {
+            color: var(--neon-green);
+            font-weight: bold;
+        }
+        
+        /* Credits Header */
+        .credits-section {
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInUp 0.7s ease-out 0.9s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .credits-header {
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            color: var(--neon-pink);
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink);
+            width: 100%;
+            animation: steadyPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes steadyPulse {
+            0%, 100% { text-shadow: 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink); }
+            50% { text-shadow: 0 0 30px var(--neon-pink), 0 0 60px var(--neon-pink), 0 0 80px var(--neon-pink); }
+        }
+        
+        .credits-header::after {
+            content: '◆ ◆ ◆';
+            display: block;
+            font-size: 0.5em;
+            color: var(--neon-cyan);
+            margin-top: 10px;
+            letter-spacing: 20px;
+        }
+        
+        /* Cards dos Criadores */
+        .creators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .creator-card {
+            background: var(--panel-bg);
+            border: 3px solid var(--neon-cyan);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        .creator-card.tiago { animation-delay: 1.2s; }
+        .creator-card.carlos { animation-delay: 1.4s; }
+        
+        .creator-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-green);
+            box-shadow: 0 20px 60px rgba(0, 255, 65, 0.5);
+        }
+        
+        .creator-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            border: 3px solid var(--neon-cyan);
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.2), rgba(0, 255, 65, 0.2));
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+            transition: all 0.3s;
+        }
+        
+        .creator-card:hover .creator-avatar {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+            transform: rotate(360deg) scale(1.1);
+        }
+        
+        .creator-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3em;
+            text-align: center;
+            margin-bottom: 5px;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+            transition: all 0.3s;
+        }
+        
+        .creator-card:hover .creator-name {
+            color: var(--neon-green);
+            letter-spacing: 2px;
+        }
+        
+        .student-id {
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: 2px solid;
+            opacity: 0;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        
+        .creator-card.tiago .social-link:nth-child(1) { animation-delay: 1.6s; }
+        .creator-card.tiago .social-link:nth-child(2) { animation-delay: 1.7s; }
+        .creator-card.carlos .social-link:nth-child(1) { animation-delay: 1.8s; }
+        .creator-card.carlos .social-link:nth-child(2) { animation-delay: 1.9s; }
+        
+        .youtube-link {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.2), rgba(255, 0, 0, 0.05));
+            border-color: #ff0000;
+        }
+        
+        .youtube-link:hover {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.4), rgba(255, 0, 0, 0.1));
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            transform: translateX(5px);
+        }
+        
+        .insta-link {
+            background: linear-gradient(135deg, rgba(225, 48, 108, 0.2), rgba(225, 48, 108, 0.05));
+            border-color: #e1306c;
+        }
+        
+        .insta-link:hover {
+            background: linear-gradient(135deg, rgba(225, 48, 108, 0.4), rgba(225, 48, 108, 0.1));
+            box-shadow: 0 0 20px rgba(225, 48, 108, 0.5);
+            transform: translateX(5px);
+        }
+        
+        /* Botão Iniciar */
+        .start-container {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInScale 0.7s ease-out 2s forwards;
+        }
+        
+        .start-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
+            border: none;
+            border-radius: 15px;
+            padding: 20px 60px;
+            font-size: 1.5em;
+            color: #000;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-decoration: none;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.4);
+            animation: btnPulse 2s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @keyframes btnPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(0, 255, 65, 0.4); }
+            50% { box-shadow: 0 0 50px rgba(0, 255, 65, 0.8); }
+        }
+        
+        .start-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(0, 255, 65, 0.6);
+            letter-spacing: 5px;
+            animation: none;
+        }
+        
+        .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #444;
+            font-size: 0.9em;
+            letter-spacing: 2px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out 2.3s forwards;
+        }
+        
+        /* ==================== TRANSITION OVERLAY ==================== */
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .transition-overlay.active {
+            display: flex;
+        }
+        
+        /* Scanlines */
+        .scanlines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.2) 50%,
+                rgba(0,0,0,0.2)
+            );
+            background-size: 100% 4px;
+            animation: scanlineMove 10s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes scanlineMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
+        }
+        
+        /* Glitch text */
+        .glitch-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3em;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            position: relative;
+            animation: glitch 0.3s infinite;
+            text-shadow: 
+                2px 0 var(--neon-pink),
+                -2px 0 var(--neon-green);
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        
+        /* Progress bar */
+        .loading-container {
+            width: 400px;
+            max-width: 80%;
+            margin-top: 40px;
+        }
+        
+        .loading-text {
+            text-align: center;
+            color: var(--neon-green);
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+        
+        .loading-bar {
+            width: 100%;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), var(--neon-green));
+            width: 0%;
+            animation: loadProgress 2s ease-out forwards;
+            box-shadow: 0 0 20px var(--neon-cyan);
+        }
+        
+        @keyframes loadProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        
+        /* Binary rain */
+        .binary-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .binary-column {
+            position: absolute;
+            top: -100%;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 5px var(--neon-cyan);
+            animation: rain 2s linear infinite;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            letter-spacing: 5px;
+        }
+        
+        @keyframes rain {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(200vh); }
+        }
+        
+        /* Flash effect */
+        .flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .flash.active {
+            animation: flashEffect 0.5s ease-out;
+        }
+        
+        @keyframes flashEffect {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        /* Circle expand */
+        .circle-expand {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--neon-cyan) 0%, var(--neon-pink) 50%, transparent 70%);
+            opacity: 0.8;
+        }
+        
+        .circle-expand.active {
+            animation: expand 1s ease-out forwards;
+        }
+        
+        @keyframes expand {
+            0% { width: 0; height: 0; opacity: 0.8; }
+            100% { width: 300vmax; height: 300vmax; opacity: 0; }
+        }
+        
+        /* Status codes */
+        .status-codes {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8em;
+            color: var(--neon-green);
+            text-align: center;
+        }
+        
+        .status-code {
+            opacity: 0;
+            animation: typeIn 0.1s ease-out forwards;
+        }
+        
+        @keyframes typeIn {
+            to { opacity: 1; }
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .main-title { font-size: 2.5em; }
+            .creators-grid { grid-template-columns: 1fr; gap: 20px; }
+            .creator-card { padding: 20px; }
+            .mission-box { padding: 25px; }
+            .credits-header { font-size: 1.8em; }
+            .glitch-text { font-size: 1.8em; }
+        }
+    
+
+        /* GAME STYLES */
+        
+       @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share Tech+Mono&display=swap');
+       
+       * {
+           margin: 0;
+           padding: 0;
+           box-sizing: border-box;
+       }
+       
+       :root {
+           --neon-cyan: #00f3ff;
+           --neon-pink: #ff00ff;
+           --neon-green: #00ff41;
+           --neon-orange: #ff6600;
+           --neon-yellow: #ffff00;
+           --neon-purple: #bf00ff;
+           --dark-bg: #0a0a0f;
+           --panel-bg: rgba(10, 10, 20, 0.9);
+       }
+       
+       body {
+           font-family: 'Share Tech Mono', monospace;
+           background: var(--dark-bg);
+           color: #fff;
+           min-height: 100vh;
+           overflow-x: hidden;
+           position: relative;
+       }
+       
+       .matrix-bg {
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           z-index: -1;
+           opacity: 0.15;
+           background: 
+               linear-gradient(90deg, transparent 50%, rgba(0, 243, 255, 0.03) 50%),
+               linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+           background-size: 50px 50px;
+           animation: gridMove 20s linear infinite;
+       }
+       
+       @keyframes gridMove {
+           0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+           100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+       }
+       
+       .container {
+           max-width: 1400px;
+           margin: 0 auto;
+           padding: 20px;
+       }
+       
+       .game-header {
+           text-align: center;
+           padding: 30px;
+           background: linear-gradient(135deg, rgba(0, 243, 255, 0.1), rgba(255, 0, 255, 0.1));
+           border: 2px solid var(--neon-cyan);
+           border-radius: 20px;
+           margin-bottom: 30px;
+           position: relative;
+           overflow: hidden;
+           box-shadow: 0 0 50px rgba(0, 243, 255, 0.3);
+       }
+       
+       .game-header::before {
+           content: '';
+           position: absolute;
+           top: -50%;
+           left: -50%;
+           width: 200%;
+           height: 200%;
+           background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+           animation: shine 3s infinite;
+       }
+       
+       @keyframes shine {
+           0% { transform: rotate(0deg); }
+           100% { transform: rotate(360deg); }
+       }
+       
+       h1 {
+           font-family: 'Orbitron', sans-serif;
+           font-size: 3em;
+           text-transform: uppercase;
+           background: linear-gradient(45deg, var(--neon-cyan), var(--neon-pink), var(--neon-green));
+           -webkit-background-clip: text;
+           -webkit-text-fill-color: transparent;
+           text-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
+           margin-bottom: 10px;
+           letter-spacing: 3px;
+       }
+       
+       .subtitle {
+           color: var(--neon-green);
+           font-size: 1.2em;
+           text-shadow: 0 0 10px var(--neon-green);
+       }
+       
+       .stats-bar {
+           display: flex;
+           justify-content: space-around;
+           flex-wrap: wrap;
+           gap: 20px;
+           margin-bottom: 30px;
+       }
+       
+       .stat-card {
+           background: var(--panel-bg);
+           border: 2px solid var(--neon-cyan);
+           border-radius: 15px;
+           padding: 20px;
+           min-width: 150px;
+           text-align: center;
+           position: relative;
+           overflow: hidden;
+           transition: all 0.3s;
+       }
+       
+       .stat-card:hover {
+           transform: translateY(-5px);
+           box-shadow: 0 10px 30px rgba(0, 243, 255, 0.4);
+       }
+       
+       .stat-value {
+           font-size: 2.5em;
+           font-weight: bold;
+           color: var(--neon-cyan);
+           text-shadow: 0 0 20px var(--neon-cyan);
+       }
+       
+       .stat-label {
+           color: #888;
+           font-size: 0.9em;
+           text-transform: uppercase;
+           letter-spacing: 2px;
+       }
+       
+       .level-nav {
+           display: grid;
+           grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+           gap: 15px;
+           margin-bottom: 30px;
+       }
+       
+       .level-btn {
+           background: linear-gradient(135deg, rgba(0, 243, 255, 0.1), rgba(255, 0, 255, 0.1));
+           border: 2px solid #333;
+           border-radius: 15px;
+           padding: 20px;
+           cursor: pointer;
+           transition: all 0.3s;
+           position: relative;
+           overflow: hidden;
+           font-family: 'Orbitron', sans-serif;
+           color: #fff;
+           font-size: 0.9em;
+       }
+       
+       .level-btn:hover:not(.locked) {
+           border-color: var(--neon-cyan);
+           transform: scale(1.05);
+           box-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
+       }
+       
+       .level-btn.active {
+           border-color: var(--neon-green);
+           background: linear-gradient(135deg, rgba(0, 255, 65, 0.2), rgba(0, 243, 255, 0.2));
+           box-shadow: 0 0 30px rgba(0, 255, 65, 0.4);
+       }
+       
+       .level-btn.locked {
+           opacity: 0.5;
+           cursor: not-allowed;
+           filter: grayscale(1);
+       }
+       
+       .level-icon {
+           font-size: 2.5em;
+           margin-bottom: 10px;
+           display: block;
+       }
+       
+       .level-name {
+           font-size: 1.1em;
+           font-weight: bold;
+           margin-bottom: 5px;
+       }
+       
+       .level-desc {
+           font-size: 0.8em;
+           color: #888;
+       }
+       
+       .game-area {
+           background: var(--panel-bg);
+           border: 2px solid var(--neon-cyan);
+           border-radius: 20px;
+           padding: 30px;
+           min-height: 500px;
+           position: relative;
+           overflow: hidden;
+       }
+       
+       .game-area::before {
+           content: '';
+           position: absolute;
+           top: 0;
+           left: 0;
+           right: 0;
+           height: 3px;
+           background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), var(--neon-green));
+           animation: borderGlow 2s linear infinite;
+       }
+       
+       @keyframes borderGlow {
+           0%, 100% { opacity: 1; }
+           50% { opacity: 0.5; }
+       }
+       
+       .challenge-header {
+           text-align: center;
+           margin-bottom: 30px;
+       }
+       
+       .challenge-title {
+           font-family: 'Orbitron', sans-serif;
+           font-size: 1.8em;
+           color: var(--neon-pink);
+           margin-bottom: 10px;
+           text-transform: uppercase;
+       }
+       
+       .progress-bar {
+           width: 100%;
+           height: 10px;
+           background: #333;
+           border-radius: 5px;
+           overflow: hidden;
+           margin: 20px 0;
+       }
+       
+       .progress-fill {
+           height: 100%;
+           background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green));
+           width: 0%;
+           transition: width 0.5s ease;
+           box-shadow: 0 0 20px var(--neon-cyan);
+       }
+       
+       .challenge-box {
+           background: rgba(0, 0, 0, 0.5);
+           border: 2px solid var(--neon-orange);
+           border-radius: 15px;
+           padding: 30px;
+           text-align: center;
+           margin-bottom: 20px;
+           position: relative;
+       }
+       
+       .number-display {
+           font-size: 3em;
+           color: var(--neon-cyan);
+           text-shadow: 0 0 30px var(--neon-cyan);
+           margin: 20px 0;
+           font-family: 'Orbitron', sans-serif;
+           letter-spacing: 5px;
+       }
+
+       .arithmetic-display {
+           font-family: 'Share Tech Mono', monospace;
+           font-size: 2.2em;
+           color: var(--neon-cyan);
+           text-shadow: 0 0 20px var(--neon-cyan);
+           margin: 20px 0;
+           line-height: 1.3;
+           white-space: pre;
+           display: inline-block;
+           text-align: right;
+       }
+       
+       .conversion-arrow {
+           font-size: 2em;
+           color: var(--neon-pink);
+           margin: 10px 0;
+           animation: pulse 1.5s infinite;
+       }
+       
+       @keyframes pulse {
+           0%, 100% { transform: scale(1); opacity: 1; }
+           50% { transform: scale(1.2); opacity: 0.7; }
+       }
+       
+       .input-group {
+           display: flex;
+           gap: 15px;
+           justify-content: center;
+           flex-wrap: wrap;
+           margin: 20px 0;
+       }
+       
+       .game-input {
+           background: rgba(0, 243, 255, 0.1);
+           border: 2px solid var(--neon-cyan);
+           border-radius: 10px;
+           padding: 15px 25px;
+           font-size: 1.5em;
+           color: #fff;
+           font-family: 'Share Tech Mono', monospace;
+           text-align: center;
+           width: 300px;
+           outline: none;
+           transition: all 0.3s;
+       }
+       
+       .game-input:focus {
+           box-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
+           transform: scale(1.05);
+       }
+       
+       .btn {
+           background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+           border: none;
+           border-radius: 10px;
+           padding: 15px 40px;
+           font-size: 1.2em;
+           color: #000;
+           font-weight: bold;
+           font-family: 'Orbitron', sans-serif;
+           cursor: pointer;
+           transition: all 0.3s;
+           text-transform: uppercase;
+           letter-spacing: 2px;
+       }
+       
+       .btn:hover {
+           transform: translateY(-3px);
+           box-shadow: 0 10px 30px rgba(0, 243, 255, 0.5);
+       }
+       
+       .btn-secondary {
+           background: transparent;
+           border: 2px solid var(--neon-cyan);
+           color: var(--neon-cyan);
+       }
+       
+       .btn-secondary:hover {
+           background: rgba(0, 243, 255, 0.2);
+       }
+       
+       .feedback {
+           position: fixed;
+           top: 50%;
+           left: 50%;
+           transform: translate(-50%, -50%) scale(0);
+           background: rgba(0, 0, 0, 0.95);
+           border: 3px solid;
+           border-radius: 20px;
+           padding: 40px;
+           text-align: center;
+           z-index: 1000;
+           transition: all 0.3s;
+           min-width: 400px;
+           max-width: 90%;
+       }
+       
+       .feedback.show {
+           transform: translate(-50%, -50%) scale(1);
+       }
+       
+       .feedback.success {
+           border-color: var(--neon-green);
+           box-shadow: 0 0 50px rgba(0, 255, 65, 0.5);
+       }
+       
+       .feedback.error {
+           border-color: #ff0040;
+           box-shadow: 0 0 50px rgba(255, 0, 64, 0.5);
+       }
+       
+       .feedback-icon {
+           font-size: 4em;
+           margin-bottom: 20px;
+       }
+       
+       .feedback-text {
+           font-size: 1.5em;
+           margin-bottom: 20px;
+       }
+       
+       .explanation {
+           background: rgba(255, 255, 255, 0.05);
+           border-radius: 10px;
+           padding: 20px;
+           margin-top: 20px;
+           text-align: left;
+           font-size: 0.9em;
+           color: #ccc;
+           border-left: 4px solid var(--neon-cyan);
+           max-height: 300px;
+           overflow-y: auto;
+       }
+       
+       .timer-bar {
+           width: 100%;
+           height: 20px;
+           background: #333;
+           border-radius: 10px;
+           overflow: hidden;
+           margin-bottom: 20px;
+           border: 2px solid var(--neon-orange);
+       }
+       
+       .timer-fill {
+           height: 100%;
+           background: linear-gradient(90deg, var(--neon-green), var(--neon-orange), #ff0040);
+           width: 100%;
+           transition: width 0.1s linear;
+       }
+       
+       .streak-counter {
+           text-align: center;
+           font-size: 2em;
+           color: var(--neon-orange);
+           margin-bottom: 20px;
+           text-shadow: 0 0 20px var(--neon-orange);
+       }
+       
+       .tutorial-overlay {
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           background: rgba(0, 0, 0, 0.9);
+           z-index: 2000;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           padding: 20px;
+       }
+       
+       .tutorial-content {
+           background: var(--panel-bg);
+           border: 2px solid var(--neon-cyan);
+           border-radius: 20px;
+           padding: 40px;
+           max-width: 800px;
+           max-height: 80vh;
+           overflow-y: auto;
+       }
+       
+       .tutorial-content h2 {
+           color: var(--neon-cyan);
+           margin-bottom: 20px;
+           font-family: 'Orbitron', sans-serif;
+       }
+       
+       .tutorial-content code {
+           background: rgba(0, 243, 255, 0.1);
+           padding: 2px 8px;
+           border-radius: 5px;
+           color: var(--neon-green);
+       }
+       
+       .hidden {
+           display: none !important;
+       }
+       
+       .xp-popup {
+           position: fixed;
+           color: var(--neon-green);
+           font-size: 2em;
+           font-weight: bold;
+           pointer-events: none;
+           animation: floatUp 2s ease-out forwards;
+           text-shadow: 0 0 20px var(--neon-green);
+           z-index: 999;
+       }
+       
+       @keyframes floatUp {
+           0% { opacity: 1; transform: translateY(0) scale(1); }
+           100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
+       }
+       
+       @media (max-width: 768px) {
+           h1 { font-size: 2em; }
+           .number-display { font-size: 2em; }
+           .arithmetic-display { font-size: 1.6em; }
+           .game-input { width: 100%; }
+           .feedback { min-width: 90%; }
+           .level-btn { font-size: 0.8em; padding: 15px; }
+       }
+       
+       .glitch {
+           animation: glitch 0.3s;
+       }
+       
+       @keyframes glitch {
+           0% { transform: translate(0); }
+           20% { transform: translate(-2px, 2px); }
+           40% { transform: translate(-2px, -2px); }
+           60% { transform: translate(2px, 2px); }
+           80% { transform: translate(2px, -2px); }
+           100% { transform: translate(0); }
+       }
+       
+       .ref-table {
+           width: 100%;
+           border-collapse: collapse;
+           margin: 20px 0;
+           font-size: 0.9em;
+       }
+       
+       .ref-table th, .ref-table td {
+           border: 1px solid var(--neon-cyan);
+           padding: 10px;
+           text-align: center;
+       }
+       
+       .ref-table th {
+           background: rgba(0, 243, 255, 0.2);
+           color: var(--neon-cyan);
+       }
+       
+       .ref-table tr:hover {
+           background: rgba(0, 243, 255, 0.1);
+       }
+       
+       .boss-health {
+           width: 100%;
+           height: 30px;
+           background: #333;
+           border-radius: 15px;
+           overflow: hidden;
+           margin: 20px 0;
+           border: 3px solid #ff0040;
+       }
+       
+       .boss-health-fill {
+           height: 100%;
+           background: linear-gradient(90deg, #ff0040, #ff6600);
+           width: 100%;
+           transition: width 0.5s;
+       }
+       
+       .boss-name {
+           text-align: center;
+           font-size: 1.5em;
+           color: #ff0040;
+           text-shadow: 0 0 20px #ff0040;
+           margin-bottom: 10px;
+           font-family: 'Orbitron', sans-serif;
+       }
+
+       /* NOVOS ESTILOS PARA ASSEMBLY */
+       .assembly-display {
+           background: rgba(0, 0, 0, 0.8);
+           border: 2px solid var(--neon-green);
+           border-radius: 10px;
+           padding: 20px;
+           font-family: 'Share Tech Mono', monospace;
+           font-size: 1.2em;
+           text-align: left;
+           margin: 20px 0;
+           color: var(--neon-green);
+       }
+
+       .register-box {
+           display: inline-block;
+           background: rgba(0, 243, 255, 0.1);
+           border: 1px solid var(--neon-cyan);
+           border-radius: 5px;
+           padding: 10px;
+           margin: 5px;
+           min-width: 80px;
+           text-align: center;
+       }
+
+       .memory-grid {
+           display: grid;
+           grid-template-columns: repeat(4, 1fr);
+           gap: 10px;
+           margin: 20px 0;
+           font-size: 0.9em;
+       }
+
+       .memory-cell {
+           background: rgba(255, 0, 255, 0.1);
+           border: 1px solid var(--neon-pink);
+           border-radius: 5px;
+           padding: 10px;
+           text-align: center;
+       }
+
+       .memory-address {
+           color: #888;
+           font-size: 0.8em;
+       }
+
+       .memory-value {
+           color: var(--neon-yellow);
+           font-size: 1.2em;
+           font-weight: bold;
+       }
+
+       .hex-arithmetic {
+           font-family: 'Share Tech Mono', monospace;
+           font-size: 1.8em;
+           color: var(--neon-purple);
+           text-shadow: 0 0 20px var(--neon-purple);
+           margin: 20px 0;
+           text-align: right;
+           display: inline-block;
+           white-space: pre;
+           line-height: 1.4;
+       }
+
+       .fraction-display {
+           font-size: 2.5em;
+           color: var(--neon-yellow);
+           text-shadow: 0 0 20px var(--neon-yellow);
+       }
+
+       .base-selector {
+           background: rgba(0, 243, 255, 0.1);
+           border: 2px solid var(--neon-cyan);
+           border-radius: 10px;
+           padding: 10px;
+           color: #fff;
+           font-family: 'Share Tech Mono', monospace;
+           font-size: 1em;
+           margin: 0 5px;
+       }
+   
+
+        /* PAGE SWITCHER */
+        #gamePage { display: none; }
+        #menuPage { display: block; }
+    </style>
+</head>
+<body>
+
+<div id="menuPage">
+<!-- Múltiplas camadas de fundo -->
+    <div class="bg-animated"></div>
+    <div class="matrix-bg"></div>
+    <div class="particles" id="particles"></div>
+    <div class="vignette"></div>
+    
+    <div class="container">
+        <!-- Título Principal -->
+        <div class="main-title">
+            <span>🔥 NUMERAL NEXUS 🔥</span>
+        </div>
+        <div class="subtitle">O Último Codificador</div>
+        
+        <!-- Missão -->
+        <div class="mission-box">
+            <div class="mission-title">🎯 OBJETIVO DA MISSÃO</div>
+            <div class="mission-text">
+                Dominar os <span class="mission-highlight">Sistemas de Numeração</span> de forma 
+                <span class="mission-highlight">divertida</span> e sem a pressão do tempo. 
+                <br><br>
+                <span style="color: var(--neon-pink);">Sem limites. Sem stress. Puro conhecimento.</span>
+            </div>
+        </div>
+        
+        <!-- Créditos -->
+        <div class="credits-section">
+            <div class="credits-header">⚡ CRIADORES ⚡</div>
+            
+            <div class="creators-grid">
+                <div class="creator-card tiago">
+                    <div class="creator-avatar">🚀</div>
+                    <div class="creator-name">Tiago Alexandre<br>Mota Gonçalves</div>
+                    <div class="student-id">a2024131637</div>
+                    
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/@Aykiy8de" target="_blank" class="social-link youtube-link">
+                            <span>▶️</span>
+                            <span>Canal de YouTube</span>
+                        </a>
+                        <a href="https://www.instagram.com/tiago_amg/" target="_blank" class="social-link insta-link">
+                            <span>📷</span>
+                            <span>Instagram</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="creator-card carlos">
+                    <div class="creator-avatar">🚀</div>
+                    <div class="creator-name">Carlos Maria Chauhan<br>de Freitas Morna</div>
+                    <div class="student-id">a2024156178</div>
+                    
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/@Reefle" target="_blank" class="social-link youtube-link">
+                            <span>▶️</span>
+                            <span>Canal de YouTube</span>
+                        </a>
+                        <a href="https://www.instagram.com/morna.carlos/" target="_blank" class="social-link insta-link">
+                            <span>📷</span>
+                            <span>Instagram</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Botão Iniciar -->
+        <div class="start-container">
+            <button class="start-btn" onclick="startGame()">
+                🎮 INICIAR JOGO
+            </button>
+        </div>
+        
+        <div class="footer-text">
+            [ PRESSIONA INICIAR PARA COMEÇAR A MISSÃO ]
+        </div>
+    </div>
+    
+    <!-- TRANSITION OVERLAY -->
+    <div class="transition-overlay" id="transitionOverlay">
+        <div class="scanlines"></div>
+        <div class="binary-rain" id="binaryRain"></div>
+        <div class="flash" id="flash"></div>
+        <div class="circle-expand" id="circleExpand"></div>
+        
+        <div class="glitch-text" id="glitchText">INICIANDO...</div>
+        
+        <div class="loading-container">
+            <div class="loading-text" id="loadingText">CARREGANDO MÓDULOS...</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+        
+        <div class="status-codes" id="statusCodes"></div>
+    </div>
+</div>
+
+<div id="gamePage">
+<div class="matrix-bg"></div>
+   
+   <div class="container">
+       <div class="game-header">
+           <h1>🔥 NUMERAL NEXUS 🔥</h1>
+           <div class="subtitle">Domina os Sistemas de Numeração ou seja Deletado</div>
+       </div>
+       
+       <div class="stats-bar">
+           <div class="stat-card">
+               <div class="stat-value" id="level">1</div>
+               <div class="stat-label">Nível</div>
+           </div>
+           <div class="stat-card">
+               <div class="stat-value" id="xp">0</div>
+               <div class="stat-label">XP</div>
+           </div>
+           <div class="stat-card">
+               <div class="stat-value" id="streak">0</div>
+               <div class="stat-label">Sequência</div>
+           </div>
+           <div class="stat-card">
+               <div class="stat-value" id="accuracy">100%</div>
+               <div class="stat-label">Precisão</div>
+           </div>
+       </div>
+       
+       <!-- Navegação atualizada com todos os modos do exame -->
+       <div class="level-nav" id="levelNav">
+           <button class="level-btn active" onclick="game.loadLevel('conversion', this)">
+               <span class="level-icon">🔄</span>
+               <div class="level-name">Conversão</div>
+               <div class="level-desc">Bin/Oct/Hex/Dec</div>
+           </button>
+           <button class="level-btn" onclick="game.loadLevel('fraction', this)">
+               <span class="level-icon">🔢</span>
+               <div class="level-name">Frações</div>
+               <div class="level-desc">Decimais → Qualquer Base</div>
+           </button>
+           <button class="level-btn" onclick="game.loadLevel('complement', this)">
+               <span class="level-icon">➕➖</span>
+               <div class="level-name">Complementos</div>
+               <div class="level-desc">C1, C2, SVA, Inversos</div>
+           </button>
+           <button class="level-btn" onclick="game.loadLevel('hexarith', this)">
+               <span class="level-icon">🔣</span>
+               <div class="level-name">Hex Aritmética</div>
+               <div class="level-desc">Soma/Sub Hex</div>
+           </button>
+           <button class="level-btn" onclick="game.loadLevel('arithmetic', this)">
+               <span class="level-icon">🧮</span>
+               <div class="level-name">Aritmética Bin</div>
+               <div class="level-desc">Operações C2</div>
+           </button>
+           <button class="level-btn" onclick="game.loadLevel('ieee', this)">
+               <span class="level-icon">🌊</span>
+               <div class="level-name">IEEE 754</div>
+               <div class="level-desc">Precisão Simples</div>
+           </button>
+           <button class="level-btn" onclick="game.loadLevel('assembly', this)">
+               <span class="level-icon">💻</span>
+               <div class="level-name">Assembly 8086</div>
+               <div class="level-desc">Endereçamento & MOV</div>
+           </button>
+           <button class="level-btn" onclick="game.loadLevel('rush', this)">
+               <span class="level-icon">⚡</span>
+               <div class="level-name">MODO RUSH</div>
+               <div class="level-desc">Contra o Tempo!</div>
+           </button>
+           <button class="level-btn" onclick="game.loadLevel('boss', this)">
+               <span class="level-icon">👹</span>
+               <div class="level-name">BOSS FINAL</div>
+               <div class="level-desc">Exame Completo!</div>
+           </button>
+       </div>
+       
+       <div class="game-area" id="gameArea">
+           <!-- Modo Conversão -->
+           <div id="conversionMode">
+               <div class="challenge-header">
+                   <div class="challenge-title">🔄 Conversão de Bases</div>
+                   <div class="progress-bar"><div class="progress-fill" id="convProgress"></div></div>
+               </div>
+               
+               <div class="challenge-box">
+                   <div id="convQuestion">Carregando...</div>
+                   <div class="conversion-arrow">⬇️</div>
+                   <div class="input-group">
+                       <input type="text" class="game-input" id="convAnswer" placeholder="Resposta..." onkeypress="if(event.key==='Enter')game.checkConversion()">
+                       <button class="btn" onclick="game.checkConversion()">CONVERTER</button>
+                   </div>
+                   <button class="btn btn-secondary" onclick="game.showTutorial('conversion')">📚 DICA</button>
+               </div>
+               
+               <div style="margin-top: 30px;">
+                   <h3 style="color: var(--neon-cyan); margin-bottom: 15px;">📋 Tabela de Referência Rápida</h3>
+                   <table class="ref-table">
+                       <tr><th>Decimal</th><th>Binário</th><th>Octal</th><th>Hexadecimal</th></tr>
+                       <tr><td>0</td><td>0000</td><td>0</td><td>0</td></tr>
+                       <tr><td>1</td><td>0001</td><td>1</td><td>1</td></tr>
+                       <tr><td>2</td><td>0010</td><td>2</td><td>2</td></tr>
+                       <tr><td>3</td><td>0011</td><td>3</td><td>3</td></tr>
+                       <tr><td>4</td><td>0100</td><td>4</td><td>4</td></tr>
+                       <tr><td>5</td><td>0101</td><td>5</td><td>5</td></tr>
+                       <tr><td>6</td><td>0110</td><td>6</td><td>6</td></tr>
+                       <tr><td>7</td><td>0111</td><td>7</td><td>7</td></tr>
+                       <tr><td>8</td><td>1000</td><td>10</td><td>8</td></tr>
+                       <tr><td>9</td><td>1001</td><td>11</td><td>9</td></tr>
+                       <tr><td>10</td><td>1010</td><td>12</td><td>A</td></tr>
+                       <tr><td>11</td><td>1011</td><td>13</td><td>B</td></tr>
+                       <tr><td>12</td><td>1100</td><td>14</td><td>C</td></tr>
+                       <tr><td>13</td><td>1101</td><td>15</td><td>D</td></tr>
+                       <tr><td>14</td><td>1110</td><td>16</td><td>E</td></tr>
+                       <tr><td>15</td><td>1111</td><td>17</td><td>F</td></tr>
+                   </table>
+               </div>
+           </div>
+           
+           <!-- NOVO: Modo Frações (Perguntas 2, 4 do exame) -->
+           <div id="fractionMode" class="hidden">
+               <div class="challenge-header">
+                   <div class="challenge-title">🔢 Conversão com Frações</div>
+                   <div class="progress-bar"><div class="progress-fill" id="fracProgress"></div></div>
+               </div>
+               
+               <div class="challenge-box">
+                   <div id="fracQuestion">Carregando...</div>
+                   <div class="conversion-arrow">⬇️</div>
+                   <div class="input-group">
+                       <input type="text" class="game-input" id="fracAnswer" placeholder="Ex: 1011,1101" onkeypress="if(event.key==='Enter')game.checkFraction()">
+                       <button class="btn" onclick="game.checkFraction()">CONVERTER</button>
+                   </div>
+                   <div style="font-size: 0.9em; color: var(--neon-yellow); margin-top: 10px;">
+                       Use vírgula (,) para separar parte inteira da fracionária
+                   </div>
+                   <button class="btn btn-secondary" onclick="game.showTutorial('fraction')">📚 COMO FAZER</button>
+               </div>
+               
+               <div style="margin-top: 20px; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 10px;">
+                   <h4 style="color: var(--neon-yellow);">Método para Frações:</h4>
+                   <p><strong>Parte inteira:</strong> Divisões sucessivas pela base</p>
+                   <p><strong>Parte fracionária:</strong> Multiplicações sucessivas pela base, lê os inteiros de cima para baixo</p>
+                   <p>Exemplo: 0,5 × 2 = 1,0 → bit 1 (para)</p>
+                   <p>Exemplo: 0,4375 × 2 = 0,875 → bit 0</p>
+               </div>
+           </div>
+           
+           <!-- Modo Complementos atualizado -->
+           <div id="complementMode" class="hidden">
+               <div class="challenge-header">
+                   <div class="challenge-title">➕➖ Complementos e Representação</div>
+                   <div class="progress-bar"><div class="progress-fill" id="compProgress"></div></div>
+               </div>
+               
+               <div class="challenge-box">
+                   <div id="compQuestion">Carregando...</div>
+                   <div class="input-group">
+                       <select class="game-input" id="compType" style="width: auto; font-size: 1em;" onchange="game.generateComplementQuestion()">
+                           <option value="c2">Complemento para 2 (8 bits)</option>
+                           <option value="c1">Complemento para 1 (8 bits)</option>
+                           <option value="sva">Sinal e Valor Absoluto (8 bits)</option>
+                           <option value="c2_to_dec">C2 → Decimal (inverso)</option>
+                           <option value="c1_to_c2">C1 → C2</option>
+                           <option value="c2_to_c1">C2 → C1</option>
+                           <option value="estender">Extensão de Sinal</option>
+                       </select>
+                   </div>
+                   <div class="input-group">
+                       <input type="text" class="game-input" id="compAnswer" placeholder="Resposta..." onkeypress="if(event.key==='Enter')game.checkComplement()">
+                       <button class="btn" onclick="game.checkComplement()">RESPONDER</button>
+                   </div>
+                   <button class="btn btn-secondary" onclick="game.showTutorial('complement')">📚 COMO FAZER</button>
+               </div>
+           </div>
+           
+           <!-- NOVO: Modo Aritmética Hexadecimal (Perguntas 8, 9 do exame) -->
+           <div id="hexarithMode" class="hidden">
+               <div class="challenge-header">
+                   <div class="challenge-title">🔣 Aritmética Hexadecimal</div>
+                   <div class="progress-bar"><div class="progress-fill" id="hexProgress"></div></div>
+               </div>
+               
+               <div class="challenge-box">
+                   <div style="font-size: 0.8em; color: #888; margin-bottom: 10px;">Calcula em hexadecimal:</div>
+                   <div id="hexQuestion" class="hex-arithmetic">Carregando...</div>
+                   <div style="font-size: 0.8em; color: var(--neon-purple); margin-top: 10px;">= ? (hexadecimal)</div>
+                   <div class="input-group">
+                       <input type="text" class="game-input" id="hexAnswer" placeholder="Resultado (ex: F694,31)" onkeypress="if(event.key==='Enter')game.checkHexArith()">
+                       <button class="btn" onclick="game.checkHexArith()">CALCULAR</button>
+                   </div>
+                   <button class="btn btn-secondary" onclick="game.showTutorial('hexarith')">📚 REGRAS HEX</button>
+               </div>
+               
+               <div style="margin-top: 20px; text-align: center;">
+                   <div style="display: inline-block; text-align: left; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 10px;">
+                       <h4 style="color: var(--neon-purple); margin-bottom: 10px;">Regras Hexadecimais:</h4>
+                       <p>A=10, B=11, C=12, D=13, E=14, F=15</p>
+                       <p>Soma: F + 1 = 10 (vai 1)</p>
+                       <p>Subtração: 10 - 1 = F (empresta)</p>
+                   </div>
+               </div>
+           </div>
+           
+           <!-- Modo Aritmética Binária -->
+           <div id="arithmeticMode" class="hidden">
+               <div class="challenge-header">
+                   <div class="challenge-title">🧮 Aritmética Binária (C2)</div>
+                   <div class="progress-bar"><div class="progress-fill" id="arithProgress"></div></div>
+               </div>
+               
+               <div class="challenge-box">
+                   <div style="font-size: 0.8em; color: #888; margin-bottom: 10px;">Soma em Complemento para 2:</div>
+                   <div id="arithQuestion" class="arithmetic-display">Carregando...</div>
+                   <div style="font-size: 0.8em; color: var(--neon-orange); margin-top: 10px;">= ? (C2)</div>
+                   <div class="input-group">
+                       <input type="text" class="game-input" id="arithAnswer" placeholder="Resultado..." onkeypress="if(event.key==='Enter')game.checkArithmetic()">
+                       <button class="btn" onclick="game.checkArithmetic()">CALCULAR</button>
+                   </div>
+                   <button class="btn btn-secondary" onclick="game.showTutorial('arithmetic')">📚 REGRAS</button>
+               </div>
+               
+               <div style="margin-top: 20px; text-align: center;">
+                   <div style="display: inline-block; text-align: left; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 10px;">
+                       <h4 style="color: var(--neon-orange); margin-bottom: 10px;">Atenção ao Overflow:</h4>
+                       <p>Se somar dois positivos e der negativo → OVERFLOW</p>
+                       <p>Se somar dois negativos e der positivo → OVERFLOW</p>
+                       <p>Sinais diferentes → nunca há overflow</p>
+                   </div>
+               </div>
+           </div>
+           
+           <!-- Modo IEEE 754 atualizado -->
+           <div id="ieeeMode" class="hidden">
+               <div class="challenge-header">
+                   <div class="challenge-title">🌊 IEEE 754 Precisão Simples</div>
+                   <div class="progress-bar"><div class="progress-fill" id="ieeeProgress"></div></div>
+               </div>
+               
+               <div class="challenge-box">
+                   <div id="ieeeQuestion">Carregando...</div>
+                   <div class="input-group">
+                       <input type="text" class="game-input" id="ieeeAnswer" placeholder="Resposta..." onkeypress="if(event.key==='Enter')game.checkIEEE()">
+                       <button class="btn" onclick="game.checkIEEE()">CONVERTER</button>
+                   </div>
+                   <button class="btn btn-secondary" onclick="game.showTutorial('ieee')">📚 FÓRMULA</button>
+               </div>
+               
+               <div style="margin-top: 20px; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 10px;">
+                   <h4 style="color: var(--neon-cyan);">Estrutura IEEE 754 (32 bits):</h4>
+                   <p style="font-family: monospace; margin: 10px 0;">
+                       <span style="color: var(--neon-pink);">1 bit</span> sinal | 
+                       <span style="color: var(--neon-green);">8 bits</span> expoente (bias 127) | 
+                       <span style="color: var(--neon-orange);">23 bits</span> mantissa
+                   </p>
+                   <p>Fórmula: <code>(-1)^sinal × 1.mantissa × 2^(expoente-127)</code></p>
+               </div>
+           </div>
+           
+           <!-- NOVO: Modo Assembly 8086 (Perguntas 13-20 do exame) -->
+           <div id="assemblyMode" class="hidden">
+               <div class="challenge-header">
+                   <div class="challenge-title">💻 Assembly 8086 - Endereçamento</div>
+                   <div class="progress-bar"><div class="progress-fill" id="asmProgress"></div></div>
+               </div>
+               
+               <div class="challenge-box">
+                   <div id="asmQuestion">Carregando...</div>
+                   
+                   <div class="assembly-display" id="asmRegisters">
+                       <!-- Registos serão preenchidos aqui -->
+                   </div>
+                   
+                   <div class="memory-grid" id="asmMemory">
+                       <!-- Memória será preenchida aqui -->
+                   </div>
+                   
+                   <div style="background: rgba(0, 243, 255, 0.1); border: 2px solid var(--neon-cyan); border-radius: 10px; padding: 15px; margin: 20px 0;">
+                       <div style="color: var(--neon-cyan); font-weight: bold; margin-bottom: 10px;">Instrução:</div>
+                       <div id="asmInstruction" style="font-size: 1.5em; color: #fff;">MOV AH, [BP]</div>
+                   </div>
+                   
+                   <div class="input-group">
+                       <input type="text" class="game-input" id="asmAnswer" placeholder="Resposta (hex, ex: 72H)" onkeypress="if(event.key==='Enter')game.checkAssembly()">
+                       <button class="btn" onclick="game.checkAssembly()">EXECUTAR</button>
+                   </div>
+                   <button class="btn btn-secondary" onclick="game.showTutorial('assembly')">📚 MODO DE ENDEREÇAMENTO</button>
+               </div>
+               
+               <div style="margin-top: 20px; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 10px;">
+                   <h4 style="color: var(--neon-green);">Fórmulas de Endereçamento Real:</h4>
+                   <p><strong>Endereço Real = Segmento × 16 + Offset</strong></p>
+                   <p>DS:0 → DS × 10H + 0</p>
+                   <p>SS:[SI] → SS × 10H + SI</p>
+                   <p>[BX+DI+110H] → DS × 10H + BX + DI + 110H</p>
+               </div>
+           </div>
+           
+           <!-- Modo Rush -->
+           <div id="rushMode" class="hidden">
+               <div class="challenge-header">
+                   <div class="challenge-title">⚡ MODO RUSH - Contra o Tempo!</div>
+                   <div class="timer-bar"><div class="timer-fill" id="rushTimer"></div></div>
+                   <div class="streak-counter">🔥 Sequência: <span id="rushStreak">0</span></div>
+               </div>
+               
+               <div class="challenge-box">
+                   <div id="rushQuestion">PREPARA-TE!</div>
+                   <div class="conversion-arrow">⬇️</div>
+                   <div class="input-group">
+                       <input type="text" class="game-input" id="rushAnswer" placeholder="RÁPIDO!" onkeypress="if(event.key==='Enter')game.checkRush()">
+                       <button class="btn" onclick="game.checkRush()">GO!</button>
+                   </div>
+               </div>
+               
+               <div style="text-align: center; margin-top: 20px;">
+                   <button class="btn btn-secondary" onclick="game.startRush()">▶️ INICIAR RUSH</button>
+               </div>
+           </div>
+           
+           <!-- Modo Boss -->
+           <div id="bossMode" class="hidden">
+               <div class="challenge-header">
+                   <div class="challenge-title">👹 BOSS FINAL: O EXAME TITÃ</div>
+                   <div class="boss-name">❤️ Saúde do Boss</div>
+                   <div class="boss-health"><div class="boss-health-fill" id="bossHealth"></div></div>
+               </div>
+               
+               <div class="challenge-box">
+                   <div id="bossQuestion">O Boss aguarda...</div>
+                   <div class="input-group">
+                       <input type="text" class="game-input" id="bossAnswer" placeholder="Ataque com conhecimento!" onkeypress="if(event.key==='Enter')game.attackBoss()">
+                       <button class="btn" onclick="game.attackBoss()" style="background: linear-gradient(135deg, #ff0040, #ff6600);">⚔️ ATACAR</button>
+                   </div>
+               </div>
+               
+               <div style="text-align: center; margin-top: 20px;">
+                   <button class="btn btn-secondary" onclick="game.startBoss()">🎮 COMEÇAR BATALHA</button>
+               </div>
+           </div>
+       </div>
+   </div>
+   
+   <!-- Feedback Modal -->
+   <div class="feedback" id="feedbackModal">
+       <div class="feedback-icon" id="feedbackIcon">✅</div>
+       <div class="feedback-text" id="feedbackText">Correto!</div>
+       <div class="explanation" id="feedbackExplanation"></div>
+       <button class="btn" onclick="game.closeFeedback()" style="margin-top: 20px;">CONTINUAR</button>
+   </div>
+   
+   <!-- Tutorial Modal -->
+   <div class="tutorial-overlay hidden" id="tutorialModal">
+       <div class="tutorial-content">
+           <h2 id="tutorialTitle">Tutorial</h2>
+           <div id="tutorialBody"></div>
+           <button class="btn" onclick="game.closeTutorial()" style="margin-top: 20px;">ENTENDIDO!</button>
+       </div>
+   </div>
+</div>
+
+<script>
+function showGame() {
+    document.getElementById('menuPage').style.display = 'none';
+    document.getElementById('gamePage').style.display = 'block';
+    if (typeof NumeralNexus !== 'undefined') {
+        window.game = new NumeralNexus();
+    }
+}
+
+/* MENU SCRIPT */
+
+        // Partículas
+        const particlesContainer = document.getElementById('particles');
+        const colors = ['#00f3ff', '#ff00ff', '#00ff41', '#ff6600'];
+        
+        for (let i = 0; i < 40; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            particle.style.animationDuration = (Math.random() * 8 + 8) + 's';
+            particle.style.color = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.background = particle.style.color;
+            particlesContainer.appendChild(particle);
+        }
+        
+        // Criar colunas de chuva binária
+        const binaryRain = document.getElementById('binaryRain');
+        for (let i = 0; i < 20; i++) {
+            const column = document.createElement('div');
+            column.className = 'binary-column';
+            column.style.left = (i * 5) + '%';
+            column.style.animationDelay = Math.random() * 2 + 's';
+            column.style.animationDuration = (Math.random() * 2 + 1) + 's';
+            column.textContent = Array(20).fill(0).map(() => Math.random() > 0.5 ? '1' : '0').join('');
+            binaryRain.appendChild(column);
+        }
+        
+        // Status codes para mostrar durante loading
+        const statusCodes = [
+            'INICIALIZANDO SISTEMA...',
+            'CARREGANDO BIBLIOTECAS BINÁRIAS...',
+            'CONFIGURANDO INTERFACE NEURAL...',
+            'ESTABELECENDO CONEXÃO SEGURA...',
+            'PREPARANDO DESAFIOS...',
+            'SISTEMA PRONTO.'
+        ];
+        
+        function startGame() {
+            const overlay = document.getElementById('transitionOverlay');
+            const glitchText = document.getElementById('glitchText');
+            const loadingText = document.getElementById('loadingText');
+            const statusContainer = document.getElementById('statusCodes');
+            const flash = document.getElementById('flash');
+            const circle = document.getElementById('circleExpand');
+            
+            // Ativar overlay
+            overlay.classList.add('active');
+            
+            // Mostrar status codes sequencialmente
+            statusCodes.forEach((code, index) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = 'status-code';
+                    div.textContent = '> ' + code;
+                    div.style.animationDelay = '0s';
+                    statusContainer.appendChild(div);
+                    
+                    // Scroll para o último
+                    statusContainer.scrollTop = statusContainer.scrollHeight;
+                }, index * 300);
+            });
+            
+            // Mudar textos durante a animação
+            setTimeout(() => {
+                glitchText.textContent = 'CONECTANDO...';
+                loadingText.textContent = 'SINCRONIZANDO DADOS...';
+            }, 600);
+            
+            setTimeout(() => {
+                glitchText.textContent = 'ENTRANDO...';
+                loadingText.textContent = 'QUASE LÁ...';
+            }, 1200);
+            
+            // Flash branco
+            setTimeout(() => {
+                flash.classList.add('active');
+            }, 1500);
+            
+            // Círculo expansivo
+            setTimeout(() => {
+                circle.classList.add('active');
+            }, 1600);
+            
+            // Transição final
+            setTimeout(() => {
+                glitchText.textContent = 'NUMERAL NEXUS';
+                glitchText.style.color = '#00ff41';
+                glitchText.style.textShadow = '0 0 30px #00ff41';
+            }, 1800);
+            
+            // Redirecionar para o jogo
+            setTimeout(() => {
+                showGame();
+            }, 2200);
+        }
+    
+
+/* GAME SCRIPT */
+
+       // Deteção de mobile
+       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+       
+       class NumeralNexus {
+           constructor() {
+               this.xp = 0;
+               this.level = 1;
+               this.streak = 0;
+               this.totalAttempts = 0;
+               this.correctAttempts = 0;
+               this.currentMode = 'conversion';
+               this.currentQuestion = null;
+               this.rushActive = false;
+               this.rushTime = 30;
+               this.bossHealth = 100;
+               this.bossMaxHealth = 100;
+               
+               this.init();
+           }
+           
+           init() {
+               this.generateConversionQuestion();
+               this.updateStats();
+           }
+           
+           updateStats() {
+               document.getElementById('xp').textContent = this.xp;
+               document.getElementById('level').textContent = this.level;
+               document.getElementById('streak').textContent = this.streak;
+               const accuracy = this.totalAttempts > 0 ? 
+                   Math.round((this.correctAttempts / this.totalAttempts) * 100) : 100;
+               document.getElementById('accuracy').textContent = accuracy + '%';
+               
+               const newLevel = Math.floor(this.xp / 100) + 1;
+               if (newLevel > this.level) {
+                   this.level = newLevel;
+                   this.showFeedback(true, `🎉 LEVEL UP! Agora és nível ${this.level}!`, 'Mais dificuldades desbloqueadas!');
+               }
+           }
+           
+           loadLevel(mode, clickedBtn) {
+               ['conversion', 'fraction', 'complement', 'hexarith', 'arithmetic', 'ieee', 'assembly', 'rush', 'boss'].forEach(m => {
+                   const el = document.getElementById(m + 'Mode');
+                   if(el) el.classList.add('hidden');
+               });
+               
+               const targetMode = document.getElementById(mode + 'Mode');
+               if(targetMode) targetMode.classList.remove('hidden');
+               
+               document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+               if (clickedBtn) clickedBtn.classList.add('active');
+               
+               this.currentMode = mode;
+               
+               try {
+                   switch(mode) {
+                       case 'conversion': this.generateConversionQuestion(); break;
+                       case 'fraction': this.generateFractionQuestion(); break;
+                       case 'complement': this.generateComplementQuestion(); break;
+                       case 'hexarith': this.generateHexArithQuestion(); break;
+                       case 'arithmetic': this.generateArithmeticQuestion(); break;
+                       case 'ieee': this.generateIEEEQuestion(); break;
+                       case 'assembly': this.generateAssemblyQuestion(); break;
+                       case 'rush': 
+                           document.getElementById('rushQuestion').innerHTML = '<div class="number-display">PREPARA-TE!</div>';
+                           break;
+                       case 'boss':
+                           document.getElementById('bossQuestion').innerHTML = '<div class="number-display">O Boss aguarda...</div>';
+                           break;
+                   }
+               } catch(e) {
+                   console.error('Erro ao carregar modo:', e);
+               }
+           }
+           
+           // ========== CONVERSÃO ==========
+           generateConversionQuestion() {
+               const types = [
+                   {from: 2, to: 10, name: 'binário', target: 'decimal'},
+                   {from: 10, to: 2, name: 'decimal', target: 'binário'},
+                   {from: 8, to: 10, name: 'octal', target: 'decimal'},
+                   {from: 10, to: 8, name: 'decimal', target: 'octal'},
+                   {from: 16, to: 10, name: 'hexadecimal', target: 'decimal'},
+                   {from: 10, to: 16, name: 'decimal', target: 'hexadecimal'},
+                   {from: 2, to: 8, name: 'binário', target: 'octal'},
+                   {from: 2, to: 16, name: 'binário', target: 'hexadecimal'},
+                   {from: 8, to: 2, name: 'octal', target: 'binário'},
+                   {from: 16, to: 2, name: 'hexadecimal', target: 'binário'},
+                   {from: 4, to: 10, name: 'base 4', target: 'decimal'}, // NOVO: Pergunta 1 do exame
+                   {from: 10, to: 4, name: 'decimal', target: 'base 4'}, // NOVO
+                   {from: 6, to: 10, name: 'base 6', target: 'decimal'}, // NOVO: Pergunta 2 do exame
+                   {from: 10, to: 6, name: 'decimal', target: 'base 6'}  // NOVO
+               ];
+               
+               const type = types[Math.floor(Math.random() * types.length)];
+               let num, questionNum;
+               
+               if (type.from === 10) {
+                   num = Math.floor(Math.random() * 255) + 1;
+                   questionNum = num.toString(10);
+               } else if (type.from === 2) {
+                   num = Math.floor(Math.random() * 255) + 1;
+                   questionNum = num.toString(2);
+               } else if (type.from === 4) {
+                   num = Math.floor(Math.random() * 255) + 1;
+                   questionNum = num.toString(4);
+               } else if (type.from === 6) {
+                   num = Math.floor(Math.random() * 215) + 1;
+                   questionNum = num.toString(6);
+               } else if (type.from === 8) {
+                   num = Math.floor(Math.random() * 511) + 1;
+                   questionNum = num.toString(8);
+               } else {
+                   num = Math.floor(Math.random() * 4095) + 1;
+                   questionNum = num.toString(16).toUpperCase();
+               }
+               
+               let answer;
+               if (type.to === 10) answer = num.toString(10);
+               else if (type.to === 2) answer = num.toString(2);
+               else if (type.to === 4) answer = num.toString(4);
+               else if (type.to === 6) answer = num.toString(6);
+               else if (type.to === 8) answer = num.toString(8);
+               else answer = num.toString(16).toUpperCase();
+               
+               this.currentQuestion = {
+                   num: questionNum,
+                   answer: answer.toUpperCase(),
+                   from: type.name,
+                   to: type.target,
+                   fromBase: type.from,
+                   toBase: type.to,
+                   decimalValue: num
+               };
+               
+               document.getElementById('convQuestion').innerHTML = `
+                   <div style="font-size: 0.5em; color: #888; margin-bottom: 10px;">Converte de ${type.name} para ${type.target}</div>
+                   <div class="number-display">${questionNum}<sub style="font-size: 0.4em;">(${type.from})</sub></div>
+                   <div style="font-size: 0.8em; color: var(--neon-orange);">= ?<sub>(${type.to})</sub></div>
+               `;
+               
+               document.getElementById('convAnswer').value = '';
+               if (!isMobile) {
+                   setTimeout(() => document.getElementById('convAnswer').focus(), 100);
+               }
+           }
+           
+           checkConversion() {
+               const userAns = document.getElementById('convAnswer').value.trim().toUpperCase();
+               const correct = this.currentQuestion.answer.toUpperCase();
+               
+               this.totalAttempts++;
+               document.getElementById('convAnswer').value = '';
+               
+               if (userAns === correct) {
+                   this.correctAttempts++;
+                   this.streak++;
+                   const xp = 10 + (this.streak > 5 ? 5 : 0);
+                   this.xp += xp;
+                   this.showXP(xp);
+                   this.showFeedback(true, '✅ CONVERSÃO PERFEITA!', 
+                       `✨ ${this.currentQuestion.num}(${this.currentQuestion.fromBase}) = ${correct}(${this.currentQuestion.toBase})<br><br>
+                        💡 Divide sucessivamente por ${this.currentQuestion.toBase} e lê os restos de baixo para cima!`);
+                   this.generateConversionQuestion();
+               } else {
+                   this.streak = 0;
+                   this.showFeedback(false, '❌ ERRO!', 
+                       `Correto: ${correct}<br>Valor decimal: ${this.currentQuestion.decimalValue}`);
+               }
+               this.updateStats();
+           }
+           
+           // ========== FRAÇÕES (NOVO - Perguntas 2, 4 do exame) ==========
+           generateFractionQuestion() {
+               const bases = [2, 6, 8, 16]; // Inclui base 6 do exame
+               const base = bases[Math.floor(Math.random() * bases.length)];
+               
+               // Gera número com parte fracionária (ex: 33.5, 175.4375)
+               const intPart = Math.floor(Math.random() * 200) + 1;
+               const fractions = [0.5, 0.25, 0.375, 0.4375, 0.625, 0.75, 0.875];
+               const fracPart = fractions[Math.floor(Math.random() * fractions.length)];
+               const num = intPart + fracPart;
+               
+               // Converte parte inteira
+               let intBin = Math.floor(num).toString(base).toUpperCase();
+               
+               // Converte parte fracionária
+               let frac = num % 1;
+               let fracResult = '';
+               let steps = [];
+               let maxBits = base === 2 ? 8 : 4;
+               
+               for (let i = 0; i < maxBits && frac > 0; i++) {
+                   frac *= base;
+                   let digit = Math.floor(frac);
+                   fracResult += digit.toString(base).toUpperCase();
+                   steps.push(`${(frac/base).toFixed(4)} × ${base} = ${frac.toFixed(4)} → ${digit}`);
+                   frac -= digit;
+               }
+               
+               const answer = fracResult.length > 0 ? `${intBin},${fracResult}` : intBin;
+               
+               this.currentQuestion = {
+                   num: num.toString(),
+                   answer: answer,
+                   base: base,
+                   explanation: `Parte inteira ${intPart} → ${intBin}<br>Parte fracionária:<br>${steps.join('<br>')}`
+               };
+               
+               document.getElementById('fracQuestion').innerHTML = `
+                   <div style="font-size: 0.5em; color: #888; margin-bottom: 10px;">Converte para base ${base}</div>
+                   <div class="fraction-display">${num}<sub>(10)</sub></div>
+                   <div style="font-size: 0.8em; color: var(--neon-yellow);">= ?<sub>(${base})</sub></div>
+               `;
+               
+               document.getElementById('fracAnswer').value = '';
+               if (!isMobile) setTimeout(() => document.getElementById('fracAnswer').focus(), 100);
+           }
+           
+           checkFraction() {
+               const userAns = document.getElementById('fracAnswer').value.trim().toUpperCase().replace('.', ',');
+               const correct = this.currentQuestion.answer;
+               
+               this.totalAttempts++;
+               document.getElementById('fracAnswer').value = '';
+               
+               if (userAns === correct) {
+                   this.correctAttempts++;
+                   this.streak++;
+                   this.xp += 15;
+                   this.showXP(15);
+                   this.showFeedback(true, '✅ CONVERSÃO PERFEITA!', this.currentQuestion.explanation);
+                   this.generateFractionQuestion();
+               } else {
+                   this.streak = 0;
+                   this.showFeedback(false, '❌ ERRO!', `Correto: ${correct}<br><br>${this.currentQuestion.explanation}`);
+               }
+               this.updateStats();
+           }
+           
+           // ========== COMPLEMENTOS ATUALIZADO ==========
+           generateComplementQuestion() {
+               const type = document.getElementById('compType').value;
+               let num = Math.floor(Math.random() * 127) + 1;
+               let question, answer, explanation;
+               
+               switch(type) {
+                   case 'c2':
+                       const isNeg = Math.random() > 0.5;
+                       num = isNeg ? -num : num;
+                       question = `Representa ${num} em Complemento para 2 (8 bits)`;
+                       if (num >= 0) {
+                           answer = num.toString(2).padStart(8, '0');
+                           explanation = `${num} = ${answer}`;
+                       } else {
+                           const pos = Math.abs(num);
+                           const bin = pos.toString(2).padStart(8, '0');
+                           const inverted = bin.split('').map(b => b === '0' ? '1' : '0').join('');
+                           const c2 = (parseInt(inverted, 2) + 1).toString(2).padStart(8, '0');
+                           answer = c2;
+                           explanation = `${num} → |${num}|=${pos}→${bin}<br>Inverte:${inverted}<br>+1:${answer}`;
+                       }
+                       break;
+                       
+                   case 'c1':
+                       const isNegC1 = Math.random() > 0.5;
+                       num = isNegC1 ? -num : num;
+                       question = `Representa ${num} em Complemento para 1 (8 bits)`;
+                       if (num >= 0) {
+                           answer = num.toString(2).padStart(8, '0');
+                       } else {
+                           const pos = Math.abs(num);
+                           const bin = pos.toString(2).padStart(8, '0');
+                           answer = bin.split('').map(b => b === '0' ? '1' : '0').join('');
+                       }
+                       explanation = `C1 de ${num} = ${answer}`;
+                       break;
+                       
+                   case 'sva': // Pergunta 3 e 7 do exame
+                       const isNegSVA = Math.random() > 0.5;
+                       num = isNegSVA ? -num : num;
+                       question = `Representa ${num} em Sinal e Valor Absoluto (8 bits)`;
+                       const mag = Math.abs(num).toString(2).padStart(7, '0');
+                       const sinal = num < 0 ? '1' : '0';
+                       answer = sinal + mag;
+                       explanation = `Bit sinal:${sinal} (${num<0?'-':'+'})<br>Magnitude:${mag}<br>Resultado:${answer}`;
+                       break;
+                       
+                   case 'c2_to_dec': // Pergunta 5 do exame
+                       const c2Num = Math.floor(Math.random() * 256);
+                       const binStr = c2Num.toString(2).padStart(8, '0');
+                       question = `Converte ${binStr}(C2) para decimal`;
+                       if (binStr[0] === '0') {
+                           answer = c2Num.toString();
+                           explanation = `Positivo: ${binStr} = ${c2Num}`;
+                       } else {
+                           const inverted = binStr.split('').map(b => b === '0' ? '1' : '0').join('');
+                           const pos = parseInt(inverted, 2) + 1;
+                           answer = (-pos).toString();
+                           explanation = `Negativo: inverte ${inverted}, +1=${pos}, resultado=-${pos}`;
+                       }
+                       break;
+                       
+                   case 'c1_to_c2': // Pergunta 6 do exame
+                       const c1Val = Math.floor(Math.random() * 128) + 128; // Negativo em C1
+                       const c1Bin = c1Val.toString(2).padStart(8, '0');
+                       question = `Converte ${c1Bin}(C1) para C2`;
+                       answer = (c1Val + 1).toString(2).padStart(8, '0').substring(0, 8);
+                       explanation = `C1:${c1Bin}<br>C2 = C1 + 1 = ${answer}`;
+                       break;
+                       
+                   case 'c2_to_c1':
+                       const c2Val = Math.floor(Math.random() * 128) + 128;
+                       const c2Bin = c2Val.toString(2).padStart(8, '0');
+                       question = `Converte ${c2Bin}(C2) para C1`;
+                       answer = (c2Val - 1).toString(2).padStart(8, '0');
+                       explanation = `C2:${c2Bin}<br>C1 = C2 - 1 = ${answer}`;
+                       break;
+                       
+                   case 'estender':
+                       const orig = Math.random() > 0.5 ? '80H' : '28H';
+                       const isNegExt = orig === '80H';
+                       question = `Estende ${orig} (8 bits) para 16 bits (com sinal)`;
+                       answer = isNegExt ? 'FF80H' : '0028H';
+                       explanation = `${orig}=${isNegExt?'10000000':'00101000'}<br>Bit sinal:${isNegExt?'1':'0'}<br>Extensão:${answer}`;
+                       break;
+               }
+               
+               this.currentQuestion = { answer, explanation, question };
+               document.getElementById('compQuestion').innerHTML = `
+                   <div class="number-display" style="font-size: 1.3em;">${question}</div>
+               `;
+               
+               document.getElementById('compAnswer').value = '';
+               if (!isMobile) setTimeout(() => document.getElementById('compAnswer').focus(), 100);
+           }
+           
+           checkComplement() {
+               const userAns = document.getElementById('compAnswer').value.trim().toUpperCase();
+               const correct = this.currentQuestion.answer.toUpperCase();
+               
+               this.totalAttempts++;
+               document.getElementById('compAnswer').value = '';
+               
+               if (userAns === correct) {
+                   this.correctAttempts++;
+                   this.streak++;
+                   this.xp += 15;
+                   this.showXP(15);
+                   this.showFeedback(true, '✅ CORRETO!', this.currentQuestion.explanation);
+                   this.generateComplementQuestion();
+               } else {
+                   this.streak = 0;
+                   this.showFeedback(false, '❌ ERRO!', `Correto: ${correct}<br>${this.currentQuestion.explanation}`);
+               }
+               this.updateStats();
+           }
+           
+           // ========== ARITMÉTICA HEXADECIMAL (NOVO - Perguntas 8, 9) ==========
+           generateHexArithQuestion() {
+               const isSum = Math.random() > 0.5;
+               const op = isSum ? '+' : '-';
+               
+               // Variação de tamanhos: 2, 3 ou 4 dígitos hex
+               const sizes = [2, 3, 4];
+               const sizeA = sizes[Math.floor(Math.random() * sizes.length)];
+               const sizeB = Math.max(2, sizeA - Math.floor(Math.random() * 2)); // B pode ser menor ou igual
+               
+               // Gera números hex com tamanhos variados
+               const maxA = Math.pow(16, sizeA) - 1;
+               const maxB = Math.pow(16, sizeB) - 1;
+               
+               let aInt = Math.floor(Math.random() * maxA * 0.8) + 1; // Evita números muito grandes
+               let bInt = Math.floor(Math.random() * maxB * 0.8) + 1;
+               
+               // Garante que subtração não dê negativo
+               if (!isSum && bInt > aInt) {
+                   [aInt, bInt] = [bInt, aInt];
+               }
+               
+               // Adiciona parte fracionária aleatoriamente (30% chance)
+               const hasFracA = Math.random() < 0.3;
+               const hasFracB = Math.random() < 0.3;
+               
+               let aFracVal = 0;
+               let bFracVal = 0;
+               let aFracStr = '';
+               let bFracStr = '';
+               
+               if (hasFracA) {
+                   const fracDigits = Math.floor(Math.random() * 2) + 1; // 1 ou 2 dígitos
+                   aFracVal = Math.floor(Math.random() * Math.pow(16, fracDigits)) / Math.pow(16, fracDigits);
+                   aFracStr = ',' + Math.floor(aFracVal * Math.pow(16, fracDigits)).toString(16).toUpperCase().padStart(fracDigits, '0');
+               }
+               
+               if (hasFracB) {
+                   const fracDigits = Math.floor(Math.random() * 2) + 1;
+                   bFracVal = Math.floor(Math.random() * Math.pow(16, fracDigits)) / Math.pow(16, fracDigits);
+                   bFracStr = ',' + Math.floor(bFracVal * Math.pow(16, fracDigits)).toString(16).toUpperCase().padStart(fracDigits, '0');
+               }
+               
+               const aFull = aInt + aFracVal;
+               const bFull = bInt + bFracVal;
+               
+               // Formata strings
+               let a = aInt.toString(16).toUpperCase() + aFracStr;
+               let b = bInt.toString(16).toUpperCase() + bFracStr;
+               
+               // Calcula resultado
+               let resultFull = isSum ? aFull + bFull : aFull - bFull;
+               let resultInt = Math.floor(resultFull);
+               let resultFrac = resultFull - resultInt;
+               
+               let result = resultInt.toString(16).toUpperCase();
+               
+               // Formata parte fracionária do resultado
+               if (resultFrac > 0.0001) {
+                   let fracResult = '';
+                   let tempFrac = resultFrac;
+                   for (let i = 0; i < 4 && tempFrac > 0.0001; i++) {
+                       tempFrac *= 16;
+                       let digit = Math.floor(tempFrac);
+                       fracResult += digit.toString(16).toUpperCase();
+                       tempFrac -= digit;
+                   }
+                   if (fracResult) {
+                       result += ',' + fracResult;
+                   }
+               }
+               
+               // Alinha os números para exibição
+               const displayA = aInt.toString(16).toUpperCase().padStart(sizeA, '0') + aFracStr;
+               const displayB = bInt.toString(16).toUpperCase().padStart(sizeA, '0') + bFracStr; // Pad com tamanho de A para alinhar
+               
+               // Cria representação visual alinhada
+               const maxLen = Math.max(displayA.length, displayB.length);
+               const paddedA = displayA.padStart(maxLen, ' ');
+               const paddedB = displayB.padStart(maxLen, ' ');
+               
+               const displayText = `${paddedA}\n${op} ${paddedB}\n${'-'.repeat(maxLen + 2)}`;
+               
+               this.currentQuestion = {
+                   a: a,
+                   b: b,
+                   op: op,
+                   answer: result,
+                   display: displayText,
+                   explanation: `${a} ${op} ${b} = ${result}<br>Em decimal: ${aFull.toFixed(4)} ${op} ${bFull.toFixed(4)} = ${resultFull.toFixed(4)}`
+               };
+               
+               document.getElementById('hexQuestion').textContent = this.currentQuestion.display;
+               
+               document.getElementById('hexAnswer').value = '';
+               if (!isMobile) setTimeout(() => document.getElementById('hexAnswer').focus(), 100);
+           }
+           
+           checkHexArith() {
+               const userAns = document.getElementById('hexAnswer').value.trim().toUpperCase();
+               const correct = this.currentQuestion.answer;
+               
+               this.totalAttempts++;
+               document.getElementById('hexAnswer').value = '';
+               
+               if (userAns === correct) {
+                   this.correctAttempts++;
+                   this.streak++;
+                   this.xp += 20;
+                   this.showXP(20);
+                   this.showFeedback(true, '✅ CÁLCULO HEX PERFEITO!', this.currentQuestion.explanation);
+                   this.generateHexArithQuestion();
+               } else {
+                   this.streak = 0;
+                   this.showFeedback(false, '❌ ERRO!', `Correto: ${correct}<br>${this.currentQuestion.explanation}`);
+               }
+               this.updateStats();
+           }
+           
+           // ========== ARITMÉTICA BINÁRIA C2 (Pergunta 10) ==========
+           generateArithmeticQuestion() {
+               // Variação de bits: 4, 6, 8, 10, 12, 16 bits
+               const bitSizes = [4, 6, 8, 10, 12, 16];
+               const bits = bitSizes[Math.floor(Math.random() * bitSizes.length)];
+               const maxVal = Math.pow(2, bits - 1) - 1; // Máximo positivo
+               const minVal = -Math.pow(2, bits - 1);    // Mínimo negativo
+               
+               // Gera dois números aleatórios dentro do range
+               let aSigned = Math.floor(Math.random() * (maxVal * 2 + 1)) - maxVal;
+               let bSigned = Math.floor(Math.random() * (maxVal * 2 + 1)) - maxVal;
+               
+               // 20% chance de forçar overflow para testar
+               const forceOverflow = Math.random() < 0.2;
+               if (forceOverflow && bits <= 8) {
+                   // Força dois positivos grandes ou dois negativos grandes
+                   if (Math.random() > 0.5) {
+                       aSigned = Math.floor(maxVal * 0.7);
+                       bSigned = Math.floor(maxVal * 0.8);
+                   } else {
+                       aSigned = Math.floor(minVal * 0.7);
+                       bSigned = Math.floor(minVal * 0.8);
+                   }
+               }
+               
+               // Converte para representação sem sinal (C2)
+               const a = aSigned < 0 ? aSigned + Math.pow(2, bits) : aSigned;
+               const b = bSigned < 0 ? bSigned + Math.pow(2, bits) : bSigned;
+               
+               const binA = a.toString(2).padStart(bits, '0');
+               const binB = b.toString(2).padStart(bits, '0');
+               
+               const sum = aSigned + bSigned;
+               const resultC2 = ((sum & (Math.pow(2, bits) - 1)) + Math.pow(2, bits)) % Math.pow(2, bits);
+               const resultBin = resultC2.toString(2).padStart(bits, '0');
+               
+               // Verifica overflow
+               const overflow = (aSigned > 0 && bSigned > 0 && sum < 0) || 
+                               (aSigned < 0 && bSigned < 0 && sum >= 0);
+               
+               // Formata exibição alinhada
+               const op = '+';
+               const maxLen = bits;
+               const displayA = binA;
+               const displayB = binB;
+               
+               const displayText = `${displayA}\n${op} ${displayB}`;
+               
+               this.currentQuestion = {
+                   a: binA,
+                   b: binB,
+                   aSigned: aSigned,
+                   bSigned: bSigned,
+                   sum: sum,
+                   result: resultBin,
+                   overflow: overflow,
+                   bits: bits,
+                   answer: overflow ? 'OVERFLOW' : resultBin,
+                   display: displayText,
+                   explanation: `${aSigned} + ${bSigned} = ${sum} (${bits} bits)<br>${displayA}<br>+${displayB}<br>=${resultBin}<br>${overflow ? '⚠️ OVERFLOW DETETADO!' : '✓ Sem overflow'}`
+               };
+               
+               document.getElementById('arithQuestion').textContent = this.currentQuestion.display;
+               
+               document.getElementById('arithAnswer').value = '';
+               if (!isMobile) setTimeout(() => document.getElementById('arithAnswer').focus(), 100);
+           }
+           
+           checkArithmetic() {
+               const userAns = document.getElementById('arithAnswer').value.trim().toUpperCase();
+               const correct = this.currentQuestion.answer;
+               
+               this.totalAttempts++;
+               document.getElementById('arithAnswer').value = '';
+               
+               const isCorrect = userAns === correct || 
+                                (correct === 'OVERFLOW' && (userAns === 'OVERFLOW' || userAns === 'NONE'));
+               
+               if (isCorrect) {
+                   this.correctAttempts++;
+                   this.streak++;
+                   this.xp += 20;
+                   this.showXP(20);
+                   this.showFeedback(true, '✅ CÁLCULO C2 PERFEITO!', this.currentQuestion.explanation);
+                   this.generateArithmeticQuestion();
+               } else {
+                   this.streak = 0;
+                   this.showFeedback(false, '❌ ERRO!', `Correto: ${correct}<br>${this.currentQuestion.explanation}`);
+               }
+               this.updateStats();
+           }
+           
+           // ========== IEEE 754 (Perguntas 11, 12) ==========
+           generateIEEEQuestion() {
+               const modes = ['toIEEE', 'fromIEEE', 'special'];
+               const mode = modes[Math.floor(Math.random() * modes.length)];
+               
+               if (mode === 'toIEEE') {
+                   // Decimal com fração → IEEE
+                   const intPart = Math.floor(Math.random() * 100) - 50; // Inclui negativos
+                   const fractions = [0.0, 0.5, 0.25, 0.75, 0.125, 0.375, 0.625, 0.875];
+                   const fracPart = fractions[Math.floor(Math.random() * fractions.length)];
+                   const num = intPart + fracPart;
+                   
+                   const ieee = this.decimalToIEEE(num);
+                   
+                   this.currentQuestion = {
+                       question: `Converte ${num} para IEEE 754 (hex)`,
+                       answer: ieee.hex.toUpperCase(),
+                       explanation: ieee.explanation
+                   };
+               } else if (mode === 'fromIEEE') {
+                   // IEEE hex → Decimal
+                   const testValues = [
+                       {hex: 'C1DE0000', dec: '-27.75'},
+                       {hex: 'C2E48000', dec: '-114.25'},
+                       {hex: '41480000', dec: '12.5'},
+                       {hex: 'C11C0000', dec: '-9.75'},
+                       {hex: '3F800000', dec: '1.0'},
+                       {hex: 'BF800000', dec: '-1.0'},
+                       {hex: '40000000', dec: '2.0'},
+                       {hex: '40400000', dec: '3.0'},
+                       {hex: '3E800000', dec: '0.25'},
+                       {hex: '3EC00000', dec: '0.375'}
+                   ];
+                   const test = testValues[Math.floor(Math.random() * testValues.length)];
+                   
+                   this.currentQuestion = {
+                       question: `Converte ${test.hex}H (IEEE 754) para decimal`,
+                       answer: test.dec,
+                       explanation: `${test.hex} → Sinal:${test.hex[0]==='C'||test.hex[0]==='B'?'1':'0'}, Expoente:${parseInt(test.hex.substr(1,2),16)}<br>Resultado: ${test.dec}`
+                   };
+               } else {
+                   // Valores especiais
+                   const specials = [
+                       {hex: '00000000', dec: '0'},
+                       {hex: '80000000', dec: '-0'},
+                       {hex: '7F800000', dec: '+inf'},
+                       {hex: 'FF800000', dec: '-inf'},
+                       {hex: '7FC00000', dec: 'NaN'}
+                   ];
+                   const special = specials[Math.floor(Math.random() * specials.length)];
+                   
+                   this.currentQuestion = {
+                       question: `Converte ${special.hex}H (IEEE 754) - valor especial`,
+                       answer: special.dec,
+                       explanation: `${special.hex} é um valor especial IEEE 754: ${special.dec}`
+                   };
+               }
+               
+               document.getElementById('ieeeQuestion').innerHTML = `
+                   <div class="number-display" style="font-size: 1.3em;">${this.currentQuestion.question}</div>
+               `;
+               
+               document.getElementById('ieeeAnswer').value = '';
+               if (!isMobile) setTimeout(() => document.getElementById('ieeeAnswer').focus(), 100);
+           }
+           
+           decimalToIEEE(num) {
+               const sign = num < 0 ? 1 : 0;
+               const abs = Math.abs(num);
+               
+               if (abs === 0) {
+                   return {
+                       hex: '00000000',
+                       explanation: `${num} = 0 em IEEE 754`
+                   };
+               }
+               
+               // Encontra expoente
+               let exp = Math.floor(Math.log2(abs));
+               let mantissa = abs / Math.pow(2, exp) - 1;
+               
+               // Ajusta se necessário
+               if (mantissa >= 1) {
+                   mantissa -= 1;
+                   exp++;
+               }
+               
+               const biasedExp = exp + 127;
+               
+               // Converte mantissa para binário (23 bits)
+               let mantissaBin = '';
+               let tempMant = mantissa;
+               for (let i = 0; i < 23; i++) {
+                   tempMant *= 2;
+                   if (tempMant >= 1) {
+                       mantissaBin += '1';
+                       tempMant -= 1;
+                   } else {
+                       mantissaBin += '0';
+                   }
+               }
+               
+               const expBin = biasedExp.toString(2).padStart(8, '0');
+               const ieee = sign.toString() + expBin + mantissaBin;
+               
+               let hex = '';
+               for (let i = 0; i < 32; i += 4) {
+                   hex += parseInt(ieee.substr(i, 4), 2).toString(16);
+               }
+               
+               return {
+                   hex: hex,
+                   explanation: `${num} → ${abs} = ${(1+mantissa).toFixed(6)} × 2^${exp}<br>Expoente com bias: ${biasedExp}<br>Hex:${hex.toUpperCase()}`
+               };
+           }
+           
+           checkIEEE() {
+               const userAns = document.getElementById('ieeeAnswer').value.trim().toUpperCase();
+               const correct = this.currentQuestion.answer.toUpperCase();
+               
+               this.totalAttempts++;
+               document.getElementById('ieeeAnswer').value = '';
+               
+               if (userAns === correct) {
+                   this.correctAttempts++;
+                   this.streak++;
+                   this.xp += 25;
+                   this.showXP(25);
+                   this.showFeedback(true, '✅ IEEE 754 DOMINADO!', this.currentQuestion.explanation);
+                   this.generateIEEEQuestion();
+               } else {
+                   this.streak = 0;
+                   this.showFeedback(false, '❌ ERRO!', `Correto: ${correct}<br>${this.currentQuestion.explanation}`);
+               }
+               this.updateStats();
+           }
+           
+           // ========== ASSEMBLY 8086 (NOVO - Perguntas 13-20) ==========
+           generateAssemblyQuestion() {
+               const modes = ['direct', 'register', 'immediate', 'based', 'indexed', 'basedIndexed', 'string'];
+               const mode = modes[Math.floor(Math.random() * modes.length)];
+               
+               // Gera valores aleatórios
+               const ds = 0x1000 + Math.floor(Math.random() * 0xF000);
+               const ss = 0x7000 + Math.floor(Math.random() * 0x8000);
+               const es = 0x2000 + Math.floor(Math.random() * 0xD000);
+               const cs = 0xF000;
+               
+               const ax = Math.floor(Math.random() * 0xFFFF);
+               const bx = Math.floor(Math.random() * 0xFFFF);
+               const cx = Math.floor(Math.random() * 0xFFFF);
+               const dx = Math.floor(Math.random() * 0xFFFF);
+               const si = Math.floor(Math.random() * 0xFFFF);
+               const di = Math.floor(Math.random() * 0xFFFF);
+               const bp = 0x100 + Math.floor(Math.random() * 0xFF00);
+               const sp = 0xFF00;
+               
+               const disp = Math.floor(Math.random() * 0x100);
+               const disp16 = Math.floor(Math.random() * 0xFFFF);
+               
+               let instruction, answer, explanation;
+               let memContent = Math.floor(Math.random() * 256).toString(16).toUpperCase().padStart(2, '0');
+               
+               switch(mode) {
+                   case 'direct': // MOV AX, [1234H]
+                       const directAddr = disp16;
+                       instruction = `MOV AX, [${directAddr.toString(16).toUpperCase().padStart(4,'0')}H]`;
+                       const realAddr = ((ds << 4) + directAddr) & 0xFFFFF;
+                       answer = memContent + (parseInt(memContent, 16) + 1).toString(16).toUpperCase().padStart(2, '0') + 'H';
+                       explanation = `Endereçamento direto usa DS<br>Endereço real = DS×16 + ${directAddr.toString(16).toUpperCase()}H<br>= ${realAddr.toString(16).toUpperCase()}H<br>Conteúdo (word): ${answer}`;
+                       break;
+                       
+                   case 'register': // MOV AX, [BX]
+                       instruction = `MOV AX, [BX]`;
+                       const addrBX = ((ds << 4) + bx) & 0xFFFFF;
+                       answer = memContent + memContent + 'H';
+                       explanation = `BX usa DS por default<br>Endereço = ${ds.toString(16).toUpperCase()}0 + ${bx.toString(16).toUpperCase()} = ${addrBX.toString(16).toUpperCase()}H<br>Conteúdo (word): ${answer}`;
+                       break;
+                       
+                   case 'immediate': // MOV AX, 1234H
+                       const immVal = disp16;
+                       instruction = `MOV AX, ${immVal.toString(16).toUpperCase().padStart(4,'0')}H`;
+                       answer = immVal.toString(16).toUpperCase().padStart(4, '0') + 'H';
+                       explanation = `Endereçamento imediato<br>Valor carregado diretamente: ${answer}`;
+                       break;
+                       
+                   case 'based': // MOV AL, [BX+SI+10H]
+                       instruction = `MOV AL, [BX+SI+${disp.toString(16).toUpperCase().padStart(2,'0')}H]`;
+                       const addrBased = ((ds << 4) + bx + si + disp) & 0xFFFFF;
+                       answer = memContent + 'H';
+                       explanation = `Endereçamento baseado indexado<br>Endereço = DS×16 + BX + SI + ${disp.toString(16).toUpperCase()}H<br>= ${addrBased.toString(16).toUpperCase()}H<br>Conteúdo: ${answer}`;
+                       break;
+                       
+                   case 'indexed': // MOV AH, SS:[SI]
+                       instruction = `MOV AH, SS:[SI]`;
+                       const addrIdx = ((ss << 4) + si) & 0xFFFFF;
+                       answer = memContent + 'H';
+                       explanation = `Override de segmento para SS<br>Endereço = SS×16 + SI<br>= ${addrIdx.toString(16).toUpperCase()}H<br>Conteúdo: ${answer}`;
+                       break;
+                       
+                   case 'basedIndexed': // MOV CX, [BP+DI]
+                       instruction = `MOV CX, [BP+DI]`;
+                       const addrBI = ((ss << 4) + bp + di) & 0xFFFFF;
+                       answer = memContent + (parseInt(memContent, 16) + 1).toString(16).toUpperCase().padStart(2, '0') + 'H';
+                       explanation = `BP usa SS por default<br>Endereço = SS×16 + BP + DI<br>= ${addrBI.toString(16).toUpperCase()}H<br>Conteúdo (word): ${answer}`;
+                       break;
+                       
+                   case 'string': // MOVSB (DS:SI para ES:DI)
+                       instruction = `MOVSB ; DS:SI → ES:DI`;
+                       answer = 'BYTE';
+                       explanation = `Operação com strings<br>Lê de DS:SI (${ds.toString(16).toUpperCase()}:${si.toString(16).toUpperCase()})<br>Escreve em ES:DI (${es.toString(16).toUpperCase()}:${di.toString(16).toUpperCase()})<br>Transferência de byte`;
+                       break;
+               }
+               
+               this.currentQuestion = {
+                   instruction: instruction,
+                   answer: answer,
+                   explanation: explanation,
+                   registers: {DS: ds, SS: ss, ES: es, CS: cs, AX: ax, BX: bx, CX: cx, DX: dx, SI: si, DI: di, BP: bp, SP: sp}
+               };
+               
+               // Mostra registos em grid
+               const regDiv = document.getElementById('asmRegisters');
+               regDiv.innerHTML = `
+                   <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; text-align: center;">
+                       <div class="register-box">DS=${ds.toString(16).toUpperCase()}H</div>
+                       <div class="register-box">SS=${ss.toString(16).toUpperCase()}H</div>
+                       <div class="register-box">ES=${es.toString(16).toUpperCase()}H</div>
+                       <div class="register-box">CS=${cs.toString(16).toUpperCase()}H</div>
+                       <div class="register-box">AX=${ax.toString(16).toUpperCase()}H</div>
+                       <div class="register-box">BX=${bx.toString(16).toUpperCase()}H</div>
+                       <div class="register-box">CX=${cx.toString(16).toUpperCase()}H</div>
+                       <div class="register-box">DX=${dx.toString(16).toUpperCase()}H</div>
+                       <div class="register-box">SI=${si.toString(16).toUpperCase()}H</div>
+                       <div class="register-box">DI=${di.toString(16).toUpperCase()}H</div>
+                       <div class="register-box">BP=${bp.toString(16).toUpperCase()}H</div>
+                       <div class="register-box">SP=${sp.toString(16).toUpperCase()}H</div>
+                   </div>
+               `;
+               
+               document.getElementById('asmInstruction').textContent = instruction;
+               
+               document.getElementById('asmAnswer').value = '';
+               if (!isMobile) setTimeout(() => document.getElementById('asmAnswer').focus(), 100);
+           }
+           
+           checkAssembly() {
+               const userAns = document.getElementById('asmAnswer').value.trim().toUpperCase();
+               const correct = this.currentQuestion.answer.toUpperCase();
+               
+               this.totalAttempts++;
+               document.getElementById('asmAnswer').value = '';
+               
+               // Aceita com ou sem H no final
+               const normalizedUser = userAns.replace(/H$/, '');
+               const normalizedCorrect = correct.replace(/H$/, '');
+               
+               if (normalizedUser === normalizedCorrect || 
+                   (correct === 'BYTE' && (userAns.includes('BYTE') || userAns.includes('8')))) {
+                   this.correctAttempts++;
+                   this.streak++;
+                   this.xp += 25;
+                   this.showXP(25);
+                   this.showFeedback(true, '✅ INSTRUÇÃO EXECUTADA!', this.currentQuestion.explanation);
+                   this.generateAssemblyQuestion();
+               } else {
+                   this.streak = 0;
+                   this.showFeedback(false, '❌ ERRO!', `Correto: ${correct}<br>${this.currentQuestion.explanation}`);
+               }
+               this.updateStats();
+           }
+           
+           // ========== RUSH MODE ==========
+           startRush() {
+               this.rushActive = true;
+               this.rushTime = 30;
+               this.rushScore = 0;
+               document.getElementById('rushStreak').textContent = '0';
+               this.nextRushQuestion();
+               this.rushTimer();
+           }
+           
+           rushTimer() {
+               if (!this.rushActive) return;
+               
+               const timer = document.getElementById('rushTimer');
+               timer.style.width = (this.rushTime / 30 * 100) + '%';
+               
+               if (this.rushTime > 0) {
+                   this.rushTime -= 0.1;
+                   setTimeout(() => this.rushTimer(), 100);
+               } else {
+                   this.rushActive = false;
+                   this.showFeedback(false, '⏰ TEMPO ESGOTADO!', 
+                       `Pontuação Rush: ${this.rushScore}<br>XP Bónus: ${this.rushScore * 2}`);
+                   this.xp += this.rushScore * 2;
+                   this.updateStats();
+               }
+           }
+           
+           nextRushQuestion() {
+               if (!this.rushActive) return;
+               
+               const types = ['conv', 'c2', 'hex', 'ieee', 'frac', 'comp'];
+               const type = types[Math.floor(Math.random() * types.length)];
+               
+               let question, answer;
+               
+               switch(type) {
+                   case 'conv':
+                       const bases = [[2,10], [10,2], [16,10], [10,16], [8,10], [10,8]];
+                       const [f, t] = bases[Math.floor(Math.random() * bases.length)];
+                       const n = Math.floor(Math.random() * 200);
+                       question = `${n.toString(f)}(${f}) → ?(${t})`;
+                       answer = n.toString(t).toUpperCase();
+                       break;
+                   case 'c2':
+                       const bits = [4, 6, 8][Math.floor(Math.random() * 3)];
+                       const c2 = Math.floor(Math.random() * Math.pow(2, bits));
+                       const bin = c2.toString(2).padStart(bits, '0');
+                       question = `${bin}(C2, ${bits}b) → dec`;
+                       const maxPos = Math.pow(2, bits - 1) - 1;
+                       answer = c2 > maxPos ? (c2 - Math.pow(2, bits)).toString() : c2.toString();
+                       break;
+                   case 'hex':
+                       const h1 = Math.floor(Math.random() * 4096).toString(16).toUpperCase();
+                       const h2 = Math.floor(Math.random() * 256).toString(16).toUpperCase();
+                       question = `${h1} + ${h2} = ?`;
+                       answer = (parseInt(h1, 16) + parseInt(h2, 16)).toString(16).toUpperCase();
+                       break;
+                   case 'ieee':
+                       const ieees = [
+                           {q: '11.5 → IEEE', a: '41380000'},
+                           {q: '-5.75 → IEEE', a: 'C0B80000'},
+                           {q: '0.5 → IEEE', a: '3F000000'},
+                           {q: '2.0 → IEEE', a: '40000000'}
+                       ];
+                       const sel = ieees[Math.floor(Math.random() * ieees.length)];
+                       question = sel.q;
+                       answer = sel.a;
+                       break;
+                   case 'frac':
+                       const fracBases = [2, 4, 8, 16];
+                       const fb = fracBases[Math.floor(Math.random() * fracBases.length)];
+                       const fnum = Math.floor(Math.random() * 50) + 0.5;
+                       question = `${fnum} → base ${fb}`;
+                       const fint = Math.floor(fnum).toString(fb).toUpperCase();
+                       answer = fint + ',8'; // 0.5 em qualquer base = 0.1 na metade da base, simplificado
+                       break;
+                   case 'comp':
+                       const compOps = ['C1→C2', 'C2→C1', 'SVA→C2'];
+                       const cop = compOps[Math.floor(Math.random() * compOps.length)];
+                       const cval = Math.floor(Math.random() * 128) + 128;
+                       const cbin = cval.toString(2).padStart(8, '0');
+                       question = `${cbin}(${cop.split('→')[0]}) → ${cop.split('→')[1]}`;
+                       if (cop === 'C1→C2') answer = (cval + 1).toString(2).padStart(8, '0');
+                       else if (cop === 'C2→C1') answer = (cval - 1).toString(2).padStart(8, '0');
+                       else answer = '1' + (cval & 0x7F).toString(2).padStart(7, '0');
+                       break;
+               }
+               
+               this.currentQuestion = { answer };
+               document.getElementById('rushQuestion').innerHTML = `
+                   <div style="font-size: 0.6em; color: #888;">RÁPIDO!</div>
+                   <div class="number-display" style="font-size: 1.5em;">${question}</div>
+               `;
+               
+               document.getElementById('rushAnswer').value = '';
+               if (!isMobile) setTimeout(() => document.getElementById('rushAnswer').focus(), 100);
+           }
+           
+           checkRush() {
+               if (!this.rushActive) return;
+               
+               const userAns = document.getElementById('rushAnswer').value.trim().toUpperCase();
+               document.getElementById('rushAnswer').value = '';
+               
+               if (userAns === this.currentQuestion.answer) {
+                   this.rushScore++;
+                   document.getElementById('rushStreak').textContent = this.rushScore;
+                   this.rushTime = Math.min(this.rushTime + 2, 30);
+                   this.nextRushQuestion();
+               } else {
+                   document.getElementById('rushAnswer').classList.add('glitch');
+                   setTimeout(() => document.getElementById('rushAnswer').classList.remove('glitch'), 300);
+               }
+           }
+           
+           // ========== BOSS MODE ==========
+           startBoss() {
+               this.bossHealth = 100;
+               this.bossMaxHealth = 100;
+               document.getElementById('bossHealth').style.width = '100%';
+               this.nextBossQuestion();
+           }
+           
+           nextBossQuestion() {
+               const types = ['conversion', 'fraction', 'complement', 'hexarith', 'arithmetic', 'ieee', 'assembly'];
+               const type = types[Math.floor(Math.random() * types.length)];
+               
+               let question, answer, explanation;
+               
+               switch(type) {
+                   case 'conversion':
+                       const bases = [2, 4, 6, 8, 16];
+                       const fromBase = bases[Math.floor(Math.random() * bases.length)];
+                       const toBase = bases[Math.floor(Math.random() * bases.length)];
+                       const num = Math.floor(Math.random() * 500);
+                       question = `Converte ${num.toString(fromBase)}(${fromBase}) → base ${toBase}`;
+                       answer = num.toString(toBase).toUpperCase();
+                       explanation = `${num}(${fromBase}) = ${num}(10) = ${answer}(${toBase})`;
+                       break;
+                   case 'fraction':
+                       const fb = [2, 4, 6, 8, 16][Math.floor(Math.random() * 5)];
+                       const fnum = (Math.floor(Math.random() * 100) + 0.5).toFixed(1);
+                       question = `Converte ${fnum}(10) → base ${fb}`;
+                       const intPart = Math.floor(parseFloat(fnum)).toString(fb).toUpperCase();
+                       answer = intPart + ',8';
+                       explanation = `Parte inteira: ${intPart}<br>0.5 × ${fb} = ${fb/2} → ${(fb/2).toString(fb).toUpperCase()}`;
+                       break;
+                   case 'complement':
+                       const cOps = ['C2→DEC', 'DEC→C2', 'C1→C2', 'SVA→C2'];
+                       const cop = cOps[Math.floor(Math.random() * cOps.length)];
+                       if (cop === 'C2→DEC') {
+                           const c2 = Math.floor(Math.random() * 256);
+                           const bin = c2.toString(2).padStart(8, '0');
+                           question = `${bin}(C2) → decimal`;
+                           answer = c2 > 127 ? (c2 - 256).toString() : c2.toString();
+                           explanation = c2 > 127 ? `Negativo: ${bin} → ${answer}` : `Positivo: ${bin} = ${answer}`;
+                       } else {
+                           const dec = Math.floor(Math.random() * 200) - 100;
+                           question = `${dec} → C2 (8 bits)`;
+                           if (dec >= 0) {
+                               answer = dec.toString(2).padStart(8, '0');
+                           } else {
+                               const pos = Math.abs(dec);
+                               const bin = pos.toString(2).padStart(8, '0');
+                               const inv = bin.split('').map(b => b === '0' ? '1' : '0').join('');
+                               answer = (parseInt(inv, 2) + 1).toString(2).padStart(8, '0');
+                           }
+                           explanation = `${dec} em C2 = ${answer}`;
+                       }
+                       break;
+                   case 'hexarith':
+                       const h1 = Math.floor(Math.random() * 0xFFFF).toString(16).toUpperCase();
+                       const h2 = Math.floor(Math.random() * 0xFFF).toString(16).toUpperCase();
+                       const hop = Math.random() > 0.5 ? '+' : '-';
+                       question = `${h1} ${hop} ${h2} = ? (hex)`;
+                       const hv1 = parseInt(h1, 16);
+                       const hv2 = parseInt(h2, 16);
+                       answer = hop === '+' ? (hv1 + hv2).toString(16).toUpperCase() : (hv1 - hv2).toString(16).toUpperCase();
+                       explanation = `${h1} ${hop} ${h2} = ${answer}`;
+                       break;
+                   case 'arithmetic':
+                       const bits = [4, 6, 8, 10, 12][Math.floor(Math.random() * 5)];
+                       const maxV = Math.pow(2, bits - 1) - 1;
+                       const a = Math.floor(Math.random() * maxV * 2) - maxV;
+                       const b = Math.floor(Math.random() * maxV * 2) - maxV;
+                       const abin = (a < 0 ? a + Math.pow(2, bits) : a).toString(2).padStart(bits, '0');
+                       const bbin = (b < 0 ? b + Math.pow(2, bits) : b).toString(2).padStart(bits, '0');
+                       question = `${abin}\n+ ${bbin}\n= ? (${bits} bits C2)`;
+                       const sum = a + b;
+                       const overflow = (a > 0 && b > 0 && sum < 0) || (a < 0 && b < 0 && sum >= 0);
+                       answer = overflow ? 'OVERFLOW' : ((sum & (Math.pow(2, bits) - 1)) + Math.pow(2, bits)) % Math.pow(2, bits).toString(2).padStart(bits, '0');
+                       explanation = `${a} + ${b} = ${sum}<br>${overflow ? 'OVERFLOW!' : 'Resultado: ' + answer}`;
+                       break;
+                   case 'ieee':
+                       const ieees = [
+                           {q: 'C1DE0000 → decimal', a: '-27.75'},
+                           {q: '3F800000 → decimal', a: '1.0'},
+                           {q: '-8.25 → IEEE', a: 'C1040000'},
+                           {q: '0.15625 → IEEE', a: '3E200000'}
+                       ];
+                       const sel = ieees[Math.floor(Math.random() * ieees.length)];
+                       question = sel.q;
+                       answer = sel.a;
+                       explanation = `IEEE 754: ${sel.a}`;
+                       break;
+                   case 'assembly':
+                       const asms = [
+                           {q: 'MOV AX,[1234H] com DS=2000', a: 'WORD', exp: 'Endereço = 20000 + 1234 = 21234H'},
+                           {q: 'MOV AL,[BP+10H] com SS=7000,BP=1000', a: 'BYTE', exp: 'BP usa SS: 70000 + 1000 + 10 = 71010H'},
+                           {q: 'Qual segmento para [BX]?', a: 'DS', exp: 'BX usa DS por default'},
+                           {q: 'Qual segmento para [BP+SI]?', a: 'SS', exp: 'BP usa SS por default'}
+                       ];
+                       const asel = asms[Math.floor(Math.random() * asms.length)];
+                       question = asel.q;
+                       answer = asel.a;
+                       explanation = asel.exp;
+                       break;
+               }
+               
+               this.currentQuestion = { question, answer, explanation };
+               document.getElementById('bossQuestion').innerHTML = `
+                   <div style="color: #ff0040; font-size: 0.8em; margin-bottom: 10px;">ATAQUE ESPECIAL!</div>
+                   <div class="number-display" style="font-size: 1.1em; white-space: pre;">${question}</div>
+               `;
+               
+               document.getElementById('bossAnswer').value = '';
+               if (!isMobile) setTimeout(() => document.getElementById('bossAnswer').focus(), 100);
+           }
+           
+           attackBoss() {
+               const userAns = document.getElementById('bossAnswer').value.trim().toUpperCase();
+               const correct = this.currentQuestion.answer.toUpperCase();
+               
+               document.getElementById('bossAnswer').value = '';
+               
+               if (userAns === correct || (correct === 'OVERFLOW' && userAns.includes('OVER'))) {
+                   const damage = 20 + Math.floor(Math.random() * 10);
+                   this.bossHealth -= damage;
+                   document.getElementById('bossHealth').style.width = (this.bossHealth / this.bossMaxHealth * 100) + '%';
+                   
+                   if (this.bossHealth <= 0) {
+                       this.showFeedback(true, '🏆 BOSS DERROTADO!', 
+                           `Parabéns! Ganhas-te 500 XP!<br>${this.currentQuestion.explanation}`);
+                       this.xp += 500;
+                       this.updateStats();
+                       this.bossHealth = 100;
+                       document.getElementById('bossHealth').style.width = '100%';
+                   } else {
+                       this.showFeedback(true, `⚔️ ACERTO! -${damage} HP`, this.currentQuestion.explanation);
+                       this.nextBossQuestion();
+                   }
+               } else {
+                   this.showFeedback(false, '💥 ERRO! O Boss contra-ataca!', 
+                       `Correto: ${this.currentQuestion.answer}<br>${this.currentQuestion.explanation}`);
+               }
+           }
+           
+           // ========== UI HELPERS ==========
+           showFeedback(success, title, explanation) {
+               const modal = document.getElementById('feedbackModal');
+               modal.className = 'feedback show ' + (success ? 'success' : 'error');
+               document.getElementById('feedbackIcon').textContent = success ? '✅' : '❌';
+               document.getElementById('feedbackText').textContent = title;
+               document.getElementById('feedbackExplanation').innerHTML = explanation;
+           }
+           
+           closeFeedback() {
+               document.getElementById('feedbackModal').classList.remove('show');
+               setTimeout(() => this.refocusCurrentInput(), 100);
+           }
+           
+           refocusCurrentInput() {
+               const inputMap = {
+                   'conversion': 'convAnswer',
+                   'fraction': 'fracAnswer',
+                   'complement': 'compAnswer',
+                   'hexarith': 'hexAnswer',
+                   'arithmetic': 'arithAnswer',
+                   'ieee': 'ieeeAnswer',
+                   'assembly': 'asmAnswer',
+                   'rush': 'rushAnswer',
+                   'boss': 'bossAnswer'
+               };
+               const inputId = inputMap[this.currentMode];
+               if (inputId && document.getElementById(inputId)) {
+                   document.getElementById(inputId).focus();
+               }
+           }
+           
+           showXP(amount) {
+               const popup = document.createElement('div');
+               popup.className = 'xp-popup';
+               popup.textContent = `+${amount} XP`;
+               popup.style.left = Math.random() * 80 + 10 + '%';
+               popup.style.top = '50%';
+               document.body.appendChild(popup);
+               setTimeout(() => popup.remove(), 2000);
+           }
+           
+           showTutorial(type) {
+               const tutorials = {
+                   conversion: {
+                       title: '📚 Conversão entre Bases',
+                       body: `<h3>Decimal → Outra Base:</h3><p>Divide sucessivamente pela base, lê restos de baixo para cima.</p><h3>Outra Base → Decimal:</h3><p>Multiplica cada dígito pela base^posição.</p>`
+                   },
+                   fraction: {
+                       title: '🔢 Frações em Outras Bases',
+                       body: `<h3>Parte Inteira:</h3><p>Divisões sucessivas pela base.</p><h3>Parte Fracionária:</h3><p>Multiplica sucessivamente pela base. O inteiro resultante é o próximo dígito (lê de cima para baixo).</p><p>Ex: 0.5 × 2 = 1.0 → bit 1</p>`
+                   },
+                   complement: {
+                       title: '➕➖ Complementos',
+                       body: `<h3>C2:</h3><p>Negativo: inverte bits do positivo e soma 1.</p><h3>C2 → Decimal:</h3><p>Se MSB=1, inverte e soma 1 para obter valor absoluto.</p><h3>C1 ↔ C2:</h3><p>C2 = C1 + 1</p>`
+                   },
+                   hexarith: {
+                       title: '🔣 Aritmética Hexadecimal',
+                       body: `<p>A=10, B=11, C=12, D=13, E=14, F=15</p><p>Soma: F+1=10 (vai 1)</p><p>Subtração: 10-1=F (empresta 16)</p><p>Alinha os números à direita para calcular!</p>`
+                   },
+                   arithmetic: {
+                       title: '🧮 Aritmética C2',
+                       body: `<p>Overflow quando:</p><ul><li>Dois positivos dão negativo</li><li>Dois negativos dão positivo</li></ul><p>Sinais diferentes = nunca há overflow</p><p>Varia de 4 a 16 bits!</p>`
+                   },
+                   ieee: {
+                       title: '🌊 IEEE 754',
+                       body: `<p>1 bit sinal | 8 bits expoente (bias 127) | 23 bits mantissa</p><p>Valor = (-1)^s × 1.mantissa × 2^(exp-127)</p><p>Valores especiais: 0, ±inf, NaN</p>`
+                   },
+                   assembly: {
+                       title: '💻 Assembly 8086',
+                       body: `<h3>Endereçamento Real:</h3><p>Endereço = Segmento × 16 + Offset</p><h3>Default segments:</h3><ul><li>BX, SI, DI → DS</li><li>BP → SS</li><li>IP → CS</li></ul><p>Override: MOV AX, SS:[BX]</p>`
+                   }
+               };
+               
+               const t = tutorials[type];
+               document.getElementById('tutorialTitle').textContent = t.title;
+               document.getElementById('tutorialBody').innerHTML = t.body;
+               document.getElementById('tutorialModal').classList.remove('hidden');
+           }
+           
+           closeTutorial() {
+               document.getElementById('tutorialModal').classList.add('hidden');
+               setTimeout(() => this.refocusCurrentInput(), 100);
+           }
+       }
+       
+       const game = new NumeralNexus();
+       
+       // Listener global corrigido
+       document.addEventListener('keydown', function(e) {
+           if (e.target.tagName === 'INPUT' || 
+               e.target.tagName === 'TEXTAREA' || 
+               e.target.tagName === 'SELECT' ||
+               document.getElementById('feedbackModal').classList.contains('show') ||
+               document.getElementById('tutorialModal').classList.contains('hidden') === false) {
+               return;
+           }
+           
+           const inputMap = {
+               'conversion': 'convAnswer',
+               'fraction': 'fracAnswer',
+               'complement': 'compAnswer',
+               'hexarith': 'hexAnswer',
+               'arithmetic': 'arithAnswer',
+               'ieee': 'ieeeAnswer',
+               'assembly': 'asmAnswer',
+               'rush': 'rushAnswer',
+               'boss': 'bossAnswer'
+           };
+           const targetInputId = inputMap[game.currentMode];
+           const targetInput = document.getElementById(targetInputId);
+           
+           if (document.activeElement === targetInput) return;
+           
+           if (['Tab', 'Escape', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 
+                'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12',
+                'Control', 'Alt', 'Shift', 'Meta', 'CapsLock', 'NumLock', 'ScrollLock',
+                'Insert', 'Delete', 'Home', 'End', 'PageUp', 'PageDown'].includes(e.key)) {
+               return;
+           }
+           
+           const inputId = inputMap[game.currentMode];
+           const input = document.getElementById(inputId);
+           
+           if (input && document.getElementById(game.currentMode + 'Mode').classList.contains('hidden') === false) {
+               if (e.key.length === 1) {
+                   input.value += e.key;
+               }
+               input.focus();
+               e.preventDefault();
+           }
+       });
+   
+</script>
+
+</body>
+</html>
